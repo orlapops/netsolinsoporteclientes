@@ -23,7 +23,7 @@
 <div *ngIf="resultados" class="row">
     <div class="row">
         <div class="col-md-12 col-xs-12 col-sm-6 col-lg-6 netsmonibotonmentop">
-            <strong>Soluciones a Casos Frecuentes {{service.usuarFb.id}} {{service.usuarFb.nombre}} 
+            <strong>Soluciones a Casos Frecuentes {{service.usuarFb.id}} {{service.usuarFb.nombre}}  (Opción en construcción)
 
             </strong>
             <strong *ngIf="service.cargo_usuar">
@@ -74,7 +74,7 @@
                                                         pagerPreviousPage="Anterior" pagerPage="Página" pagerOf="de" pagerItems="ítems" pagerItemsPerPage="ítems por página">
                                                     </kendo-grid-messages>
                                                     <div>
-                                                        <kendo-grid-column field="productoprin" title="Producto" width="80" [sortable]="true">
+                                                        <kendo-grid-column field="productoprin" title="Producto" width="20" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
                                                                 <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
@@ -82,7 +82,7 @@
                                                                 {{ dataItem.productoprin }}
                                                             </ng-template>
                                                         </kendo-grid-column>
-                                                        <kendo-grid-column field="modulo" title="Modulo" width="80" [sortable]="true">
+                                                        <kendo-grid-column field="modulo" title="Modulo" width="20" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
                                                                 <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
@@ -90,14 +90,15 @@
                                                                 {{ dataItem.modulo }}
                                                             </ng-template>
                                                         </kendo-grid-column>
-                                                        <kendo-grid-column field="asunto" title="Asunto" width="200" [sortable]="true">
+                                                        <kendo-grid-column field="asunto" title="Asunto" width="80" [sortable]="true">
                                                             <ng-template kendoGridCellTemplate let-dataItem>
                                                                 {{ dataItem.asunto }}
                                                             </ng-template>
                                                         </kendo-grid-column>
-                                                        <kendo-grid-column field="instrucciones" title="Instrucciones" width="300" [sortable]="true">
+                                                        <kendo-grid-column field="instrucciones" title="Instrucciones" width="400" [sortable]="true">
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                {{ dataItem.instrucciones }}
+                                                                <!-- {{ dataItem.instrucciones }} -->
+                                                                <div [innerHtml]="safeHtnlinstrucciones(dataItem.instrucciones)"></div>
                                                             </ng-template>
                                                         </kendo-grid-column>
                                                     </div>

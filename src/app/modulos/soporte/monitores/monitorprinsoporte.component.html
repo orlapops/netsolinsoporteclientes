@@ -96,13 +96,17 @@
                                                                     </span>
                                                             </ng-template>
                                                         </kendo-grid-column>
+                                                        <kendo-grid-column field="asunto" title="Asunto" width="200" [sortable]="true">
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                {{ dataItem.asunto }}
+                                                            </ng-template>
+                                                        </kendo-grid-column>
 
                                                         <kendo-grid-column field="nomusuarreporta" title="Usuario" width="160" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
                                                                 <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                <!-- <a (routerLink)="retornaRutaCotiza(dataItem)">{{ dataItem.cod_dcotiz+' | '+dataItem.num_dcotiz+' Ver:'+dataItem.id_version }}</a> -->
                                                                 <a (click)="monitorClick(dataItem)">{{ dataItem.nomusuarreporta}}</a>
 
                                                             </ng-template>
@@ -122,11 +126,6 @@
                                                                 {{ dataItem.fecha.toDate() | date: 'mediumDate' }}
                                                             </ng-template>
                                                         </kendo-grid-column> -->
-                                                        <kendo-grid-column field="asunto" title="Asunto" width="200" [sortable]="true">
-                                                            <ng-template kendoGridCellTemplate let-dataItem>
-                                                                {{ dataItem.asunto }}
-                                                            </ng-template>
-                                                        </kendo-grid-column>
                                                         <kendo-grid-column field="prioridad" title="Prioridad" width="80" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
                                                                 <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
@@ -226,16 +225,21 @@
                                                                         </span>
                                                             </ng-template>
                                                         </kendo-grid-column>
-                                                        <kendo-grid-column field="nom_empre" title="Empresa" width="160" [sortable]="true">
+                                                        <kendo-grid-column field="asunto" title="Asunto" width="200" [sortable]="true">
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                {{ dataItem.asunto }}
+                                                            </ng-template>
+                                                        </kendo-grid-column>
+
+                                                        <!-- <kendo-grid-column field="nom_empre" title="Empresa" width="160" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
                                                                 <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                <!-- <a (routerLink)="retornaRutaCotiza(dataItem)">{{ dataItem.cod_dcotiz+' | '+dataItem.num_dcotiz+' Ver:'+dataItem.id_version }}</a> -->
                                                                 <a (click)="monitorClick(dataItem)">{{ dataItem.nom_empre}}</a>
 
                                                             </ng-template>
-                                                        </kendo-grid-column>
+                                                        </kendo-grid-column> -->
 
                                                         <kendo-grid-column field="nomusuarreporta" title="Usuario" width="160" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
@@ -257,11 +261,6 @@
                                                             <ng-template kendoGridFilterMenuTemplate let-filter let-column="column" let-filterService="filterService">
                                                                 <date-range-filter [field]="column.field" [filter]="filter" [filterService]="filterService">
                                                                 </date-range-filter>
-                                                            </ng-template>
-                                                        </kendo-grid-column>
-                                                        <kendo-grid-column field="asunto" title="Asunto" width="200" [sortable]="true">
-                                                            <ng-template kendoGridCellTemplate let-dataItem>
-                                                                {{ dataItem.asunto }}
                                                             </ng-template>
                                                         </kendo-grid-column>
                                                         <!-- <kendo-grid-column field="tiemporepotacerrado" title="Tiempo" width="80" [sortable]="true">

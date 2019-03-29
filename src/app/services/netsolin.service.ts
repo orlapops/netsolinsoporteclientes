@@ -682,7 +682,7 @@ fechacad(fechaf){
 			// .collection(`/clientes/${NetsolinApp.oapp.nit_empresa}/incidentes`
 			return this.fbDb
 			.collection(`/incidentes`
-			,ref => ref.where('solucionado', '==', true)
+			,ref => ref.where('nit_empre', '==', NetsolinApp.oapp.nit_empresa).where('solucionado', '==', true)
 			.limit(100))
 		 .valueChanges()
 		 .pipe(

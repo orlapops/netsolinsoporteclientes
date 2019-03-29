@@ -24,7 +24,7 @@ import { Observable } from 'rxjs';
 import { process, State, CompositeFilterDescriptor,filterBy, FilterDescriptor,distinct } from '@progress/kendo-data-query';
 import {GridComponent,GridDataResult,PageChangeEvent,DataStateChangeEvent} from '@progress/kendo-angular-grid';
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
-import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
+import { DomSanitizer, SafeStyle, SafeHtml} from '@angular/platform-browser';
 import { EditService } from '../../../services/Editsoporte.service';
 import { Casofrecuen } from '../modeldatocasofrecuen';
 @Component({
@@ -72,7 +72,7 @@ public editDataItem: Casofrecuen;
 public isNew: boolean;
 public editService: EditService;
 public resultalert;
-
+safeHtml: SafeHtml;
   subtitle = '(Monitor)';
   varParam: string;
   rutamant: string;
@@ -145,6 +145,10 @@ return distinct(this.casofrecuentes, fieldName).map(item => item[fieldName]);
     return false;
 }
 
+public safeHtnlinstrucciones(pcodigohtml)
+{
+  return this.sanitizer.bypassSecurityTrustHtml(pcodigohtml);
+}
 
   ngOnInit() {
     this.cargando = true;
