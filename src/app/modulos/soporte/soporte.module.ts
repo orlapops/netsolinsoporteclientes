@@ -31,10 +31,12 @@ import { environment } from '../../../environments/environment';
 import { SoporteComponent } from './soporte.component';
 
 import { MonitorPrinSoporteComponent } from './monitores/monitorprinsoporte.component';
+import { MonitorPrinRequerimientoComponent } from './monitores/monitorprinrequerimiento.component';
 import { NetsolinLibreriasModule } from '../../netsolinlibrerias/netsolin.librerias.module';
 import { NetsolinMantablasModule } from '../../mantablasbasicas/netsolin.mantablas.module';
 import { Netssoportebusqueda } from './componentes/soportebusqueda/soportebusquedamodal.componet';
 import { MonitorIncidenciaComponent } from './monitores/incidencia/monitor.component';
+import { MonitorRequerimientoComponent } from './monitores/requerimiento/monitor.component';
 import { MonitorGeneralComponent } from './monitores/general/monitor.component';
 import { MonitorObjetotablaComponent } from './monitores/objetotabla/monitor.component';
 import { MonitorPrinCasosfreComponent } from './monitores/monitorprincasosfrecue.component';
@@ -59,6 +61,7 @@ import { ChartsModule } from '@progress/kendo-angular-charts';
 import '@progress/kendo-angular-intl/locales/es/all';
 import { AppmenuSoporteComponent } from './componentes/appmenuizq/appmenu.component';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
+import { EditorModule } from '@progress/kendo-angular-editor';
 
 // Load all required data for the ES locale
 // import '@progress/kendo-angular-intl/locales/es/all';
@@ -70,6 +73,9 @@ import { DateRangeFilterComponent } from '../../netsolinlibrerias/filtromultiple
 import { EditService } from '../../services/Editsoporte.service';
 import { GridEditFormComponent } from './edit-form.Soporte.component';
 import { GridEditFormarchComponent } from './monitores/incidencia/edit-formarch.Soporte.component';
+import { GridEditFormRequerComponent } from './edit-form.requer.component';
+import { GridEditFormarchrequerComponent } from './monitores/requerimiento/edit-formarch.requer.component';
+import { GridEditnovedadrequerFormComponent } from './monitores/requerimiento/edit-form.Novedadrequer.component';
 // import { UploadComponent } from './upload.component';
 // import { UploadInterceptor } from './monitores/incidencia/edit-formarch.Soporte.component';
 
@@ -80,21 +86,28 @@ registerLocaleData(localeEs, 'es')
         SoporteComponent,
         Netssoportebusqueda,
         MonitorPrinSoporteComponent,
+        MonitorPrinRequerimientoComponent,
         MonitorPrinCasosfreComponent,
         MonitorIncidenciaComponent,
+        MonitorRequerimientoComponent,
         MonitorGeneralComponent,
         MonitorObjetotablaComponent,
         AppmenuSoporteComponent,
         MultiCheckFilterComponent,
         DateRangeFilterComponent,
         GridEditFormComponent,
-        GridEditFormarchComponent
+        GridEditFormarchrequerComponent,
+        GridEditFormRequerComponent,
+        GridEditFormarchComponent,
+        GridEditnovedadrequerFormComponent
     ],
     exports: [
         MonitorPrinSoporteComponent,
+        MonitorPrinRequerimientoComponent,
         MonitorPrinCasosfreComponent,
         Netssoportebusqueda,
         MonitorIncidenciaComponent,
+        MonitorRequerimientoComponent,
         MonitorGeneralComponent,
         MonitorObjetotablaComponent,
         AppmenuSoporteComponent,
@@ -131,6 +144,7 @@ registerLocaleData(localeEs, 'es')
         ExcelModule,
         ChartsModule,
         DateInputsModule,
+        EditorModule,
         AgmCoreModule.forRoot({
             apiKey: 'AIzaSyD9BxeSvt3u--Oj-_GD-qG2nPr1uODrR0Y'
             // apiKey: 'AIzaSyBCxuyq-qQPZFoWSc7UYY1uCznmZnjfqGI'

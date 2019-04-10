@@ -29,6 +29,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import '@progress/kendo-angular-intl/locales/es/all';
 import { UploadModule } from '@progress/kendo-angular-upload';
 import { HttpClientModule } from '@angular/common/http';
+import { GridModule } from '@progress/kendo-angular-grid';
+import { EditorModule } from '@progress/kendo-angular-editor';
+
+
 
 
 
@@ -55,7 +59,9 @@ import { HttpClientModule } from '@angular/common/http';
   DateInputsModule,
   BrowserAnimationsModule,
   UploadModule,
-  HttpClientModule // imports firebase/firestore, only needed for database features
+  HttpClientModule,
+  GridModule,
+  EditorModule // imports firebase/firestore, only needed for database features
 
   ],
   providers: [
