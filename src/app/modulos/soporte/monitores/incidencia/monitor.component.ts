@@ -210,6 +210,15 @@ public sort: SortDescriptor[] = [{
        });
     });
   }
+public darporleidochat(){
+  console.log('dar por leido item:',this.pticket, this.pnit_empresa,this.chatincidencias,this.chatincidencias.length);
+  //actualizar ult mensaje chat a leido
+  if (this.chatincidencias.length >0) {
+    // this.service.darleidoresumchat('I',this.pticket, this.pnit_empresa);
+    const idchatult = 'IN'+this.pnit_empresa.trim()+this.pticket;
+    this.service.darleidoresumchatFb(idchatult);
+  }
+}
 
   public filterChange(filter: CompositeFilterDescriptor): void {
     this.filter = filter;

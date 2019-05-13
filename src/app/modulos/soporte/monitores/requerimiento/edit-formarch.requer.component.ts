@@ -4,10 +4,8 @@ import { Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms'
 // import { AngularFireStorage } from '@angular/fire/storage';
 import { FileInfo, FileRestrictions } from '@progress/kendo-angular-upload';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpProgressEvent, HttpEventType, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
-import { concat } from 'rxjs/observable/concat';
-import { delay } from 'rxjs/operators/delay';
+import { Observable ,  of ,  concat } from 'rxjs';
+import { delay } from 'rxjs/operators';
 
 @Component({
     selector: 'kendo-grid-editarchrequer-form',

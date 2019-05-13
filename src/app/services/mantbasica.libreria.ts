@@ -1,7 +1,7 @@
 //Librerias para código compartido mantenimiento de tablas
 import { Injectable } from "@angular/core";
 // import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from "rxjs/Observable";
+import { Observable } from "rxjs";
 import { catchError, map, tap } from "rxjs/operators";
 import { NetsolinApp } from '../shared/global';
 

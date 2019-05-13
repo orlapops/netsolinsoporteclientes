@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 // import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { NetsolinApp } from '../../shared/global';
-
-import { BehaviorSubject } from 'rxjs/Rx';
 
 @Injectable()
 

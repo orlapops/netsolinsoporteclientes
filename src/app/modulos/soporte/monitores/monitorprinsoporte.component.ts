@@ -140,7 +140,10 @@ public filterChange(filter: CompositeFilterDescriptor): void {
 public distinctPrimitive(fieldName: string): any {
 return distinct(this.incidentespen, fieldName).map(item => item[fieldName]);
 }
-
+public distinctPrimitiveCerrrados(fieldName: string): any {
+  return distinct(this.incidentescerrados, fieldName).map(item => item[fieldName]);
+  }
+  
 public filterChangecerrados(filter: CompositeFilterDescriptor): void {
   this.filtercerrados = filter;
   this.gridDatacerrados = filterBy(this.incidentescerrados, filter);

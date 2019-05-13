@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-   import { Observable } from 'rxjs/Observable';
+   import { Observable } from 'rxjs';
    import { AngularFireDatabase } from '@angular/fire/database';
 import { Incidente } from '../modulos/soporte/modeldatoincidente';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';

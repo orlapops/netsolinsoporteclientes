@@ -1,5 +1,5 @@
 import { Component,Input,OnInit,OnChanges,SimpleChanges,Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 import { NetscomboboxService } from './netscombobox.service';
 import { NetsolinApp } from '../../shared/global';
 import { HttpClient } from '@angular/common/http';

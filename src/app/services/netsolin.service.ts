@@ -1,8 +1,7 @@
+
+import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-// import { Http, Response, Headers, RequestOptions } from '@angular/http';
-// import 'rxjs/add/operator/map';
-import { Observable } from 'rxjs/Observable';
 
 import { catchError, map, tap } from 'rxjs/operators';
 import { NetsolinApp } from '../shared/global';
@@ -11,7 +10,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { AngularFireStorage,  AngularFireStorageReference } from '@angular/fire/storage';
 
 import { pipe } from '@angular/core/src/render3/pipe';
-// import { Observable } from 'rxjs';
+// import { Observable } from 'rxjs/Observable';
 import { Incidente } from '../modulos/soporte/modeldatoincidente';
 
 @Injectable()
@@ -100,11 +99,11 @@ cargaPeriodoUsuar(pcod_usuar){
 		// console.error('Error en servidor:', error);
 		if (error.error instanceof Error) {
 			let errMessage = error.error.message;
-			return Observable.throw(errMessage);
+			return observableThrowError(errMessage);
 			// Use the following instead if using lite-server
 			//return Observable.throw(err.text() || 'backend server error');
 		}
-		return Observable.throw(error || 'Node.js server error');
+		return observableThrowError(error || 'Node.js server error');
 	}
 
 	getNetsolinslide(): Observable<any> {
@@ -722,11 +721,71 @@ fechacad(fechaf){
 						usuario: this.usuarFb.nombre,
 						texto: texto,
 						leido: false
-					}
+					}					
 					// console.log('save fb ', regchat);
 					 this.fbDb.collection(`/incidentes/${incidente.ticket}/chat`)
 					 .doc(idchat).set(regchat);
+					 //registro chat por incidente ultimo para alertas
+					 const idchatult = 'IC'+incidente.nit_empre.trim()+incidente.ticket;
+					 const regchatult = {
+						tipo: 'I',
+						id: idchat,
+						fecha: now,
+						cliente: true,
+						usuario: this.usuarFb.nombre,
+						texto: texto,
+						ticket: incidente.ticket,
+						nit_empre: incidente.nit_empre,
+						nom_empre: NetsolinApp.oapp.nom_empresa,
+						leido: false
+					}					
+					console.log('save chat en result fb ', regchatult);
+					 this.fbDb.collection(`/chat`)
+					 .doc(idchatult).set(regchatult);
 			}
+
+			public getChatnoleidosFB(ptipo,pticket,pnit_empre){
+				return this.fbDb
+				 .collection(`/chat`,ref => ref.where('nit_empre', '==', pnit_empre).where('tipo', '==', ptipo)
+					 .where("ticket","==", pticket).where("cliente","==",false))
+					.snapshotChanges()
+					.pipe(
+						map(actions =>
+							actions.map((a: any) => {
+								// console.log(a);
+								const data = a.payload.doc.data();
+								const id = a.payload.doc.id;
+								// console.log(id,data);
+								return {id}
+							})
+						)
+					 );
+			}
+	
+			public darleidoresumchatFb(pid){
+						console.log('a acutualizar item ',pid);
+						this.fbDb.doc(`chat/${pid}`).update({leido: true});
+			}
+
+
+			public getChatResumFB(pnit_empre){
+				return this.fbDb
+				.collection(`/chat`,ref => ref.where('nit_empre', '==', pnit_empre)
+					.where("leido","==", false).where("cliente","==",false))
+				 .valueChanges()
+				 .pipe(
+					map(actions =>
+						actions.map((a: any) => {
+							const fecha = a.fecha.toDate();
+							const fechastr = fecha.toLocaleDateString()
+							const horastr = fecha.toLocaleTimeString()
+							const fechachat = a.fecha.toDate();
+							return { fechachat, fechastr, horastr, ...a };
+					})
+				)
+			 );
+			}
+				
 			public getChatIncidenteFB(pticket){
 				return this.fbDb
 				.collection(`/incidentes/${pticket}/chat`)
@@ -1020,6 +1079,24 @@ public regChatrequerimientoFb(requer: any, texto: string) {
 			// console.log('save fb ', regchat);
 			 this.fbDb.collection(`/requerimientos/${requer.idrequer}/chat`)
 			 .doc(idchat).set(regchat);
+					 //registro chat por requerimiento ultimo para alertas
+					 const idchatult = 'RC'+requer.nit_empre.trim()+requer.idrequer;
+					 const regchatult = {
+						tipo: 'R',
+						id: idchat,
+						fecha: now,
+						cliente: true,
+						usuario: this.usuarFb.nombre,
+						texto: texto,
+						ticket: requer.idrequer,
+						nit_empre: requer.nit_empre,
+						nom_empre: NetsolinApp.oapp.nom_empresa,
+						leido: false
+					}					
+					console.log('save chat en result fb req ', regchatult);
+					 this.fbDb.collection(`/chat`)
+					 .doc(idchatult).set(regchatult);
+
 	}
 	      //Se suscribe a modulos
 				public getModulosFB() {

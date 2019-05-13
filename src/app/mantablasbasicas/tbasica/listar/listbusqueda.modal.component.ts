@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs/Rx';
+import { Observable } from 'rxjs';
 
 import { MantbasicaService } from '../../../services/mantbasica.service';
 import { NetsolinApp } from '../../../shared/global';

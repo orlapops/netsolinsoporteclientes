@@ -277,6 +277,30 @@ export class MonitorRequerimientoComponent implements OnInit {
         });
     });
   }
+
+  public darporleidochat(){
+    console.log('dar por leido item:',this.pidrequer, this.pnit_empresa);
+    //actualizar ult mensaje chat a leido
+    if (this.chatrequerimientos.length >0){
+      // this.darleidoresumchat('R',this.pidrequer, this.pnit_empresa);
+      const idchatult = 'RN'+this.pnit_empresa.trim()+this.pidrequer;
+      this.service.darleidoresumchatFb(idchatult);
+    }
+  }
+
+  // public darleidoresumchat(ptipo,pticket,pnit_empre){
+  //   const idchatult = ptipo+pnit_empre.trim()+pticket;
+  //   console.log('darleidoresumchat',idchatult);
+  //   this.service.getChatnoleidosFB(ptipo,pticket,pnit_empre)
+  //      .subscribe((items: any) =>{
+  //        console.log('items',items);
+  //             items.forEach(job=>{
+  //               console.log('a acutualizar item ',job.id);
+  //               this.service.darleidoresumchatFb(job.id);
+  //             })
+  //         });		
+  // }
+
   public filterChangelog(filter: CompositeFilterDescriptor): void {
     this.filternov = filter;
     this.gridDataNov = filterBy(this.logrequerimientos, filter);

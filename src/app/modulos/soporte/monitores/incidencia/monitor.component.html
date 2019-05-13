@@ -70,7 +70,7 @@
             <div class="box-body">
                 <kendo-splitter-pane>
                     <kendo-tabstrip>
-                        <kendo-tabstrip-tab [title]="'Evaluación Interna'" [selected]="true">
+                        <kendo-tabstrip-tab [title]="'Evaluación Interna'" [selected]="false">
                             <ng-template kendoTabContent>
                                 <div class="row">
                                     <div class="col-md-12">
@@ -309,13 +309,13 @@
                                 </div>
                             </ng-template>
                         </kendo-tabstrip-tab>
-                        <kendo-tabstrip-tab [title]="'Chat'" [selected]="false">
+                        <kendo-tabstrip-tab [title]="'Chat'" [selected]="true">
                             <ng-template kendoTabContent>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="box box-success">
                                             <div class="box-header">
-                                                <i class="fa fa-comments-o"></i>
+                                                <i class="fa fa-weixin"></i>
                                                 <h3 class="box-title">Chat</h3>
                                                 <!-- <div class="box-tools pull-right" data-toggle="tooltip" title="Status">
                                                     <div class="btn-group" data-toggle="btn-toggle">
@@ -340,9 +340,9 @@
                                             <!-- /.chat -->
                                             <div class="box-footer">
                                                 <div class="input-group">
-                                                    <input class="form-control" [(ngModel)]="chatmensaje" placeholder="Escriba mensaje...">
-                                                    <div class="input-group-btn">
-                                                        <button (click)="chatEnviamensaje($event)" class="btn btn-success"><i class="fa fa-plus"></i></button>
+                                                    <input class="form-control" [(ngModel)]="chatmensaje" (focus)="darporleidochat()" placeholder="Escriba mensaje...">
+                                                    <div class="input-group-btn enviachat">
+                                                        <button (click)="chatEnviamensaje($event)" class="btn btn-success"><i class="fa fa-send-o"></i></button>
                                                     </div>
                                                 </div>
                                             </div>
