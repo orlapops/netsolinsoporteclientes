@@ -1,5 +1,3 @@
-
-import {map, filter} from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivationEnd } from '@angular/router';
 import { Meta, Title, MetaDefinition } from '@angular/platform-browser';
@@ -46,13 +44,13 @@ export class BreadcrumbsComponent implements OnInit {
 
   getDataRoute() {
 
-    return this.router.events.pipe(
-        filter( evento =>  evento instanceof ActivationEnd),
-        filter( (evento: ActivationEnd) => evento.snapshot.firstChild === null ),
-        map( (evento: ActivationEnd) => {
+    return this.router.events
+        .filter( evento =>  evento instanceof ActivationEnd)
+        .filter( (evento: ActivationEnd) => evento.snapshot.firstChild === null )
+        .map( (evento: ActivationEnd) => {
           // console.log('map getdataroute');
           // console.log(evento);
-          return evento.snapshot.data }),);
+          return evento.snapshot.data });
 
   }
 

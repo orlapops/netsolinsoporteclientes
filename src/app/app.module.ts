@@ -11,9 +11,6 @@ import { FormsModule } from '@angular/forms';
 // Servicios
 import { ServiceModule } from './services/service.module';
 
-
-
-
 // Componentes
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -29,9 +26,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import '@progress/kendo-angular-intl/locales/es/all';
 import { UploadModule } from '@progress/kendo-angular-upload';
 import { HttpClientModule } from '@angular/common/http';
-import { GridModule } from '@progress/kendo-angular-grid';
 import { EditorModule } from '@progress/kendo-angular-editor';
-
+import { ChartsModule } from '@progress/kendo-angular-charts';
+import 'hammerjs';
+import { GridModule } from '@progress/kendo-angular-grid';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { ToolBarModule } from '@progress/kendo-angular-toolbar';
 
 
 
@@ -60,8 +60,11 @@ import { EditorModule } from '@progress/kendo-angular-editor';
   BrowserAnimationsModule,
   UploadModule,
   HttpClientModule,
+  EditorModule,
+  ChartsModule,
   GridModule,
-  EditorModule // imports firebase/firestore, only needed for database features
+  DropDownsModule,
+  ToolBarModule // imports firebase/firestore, only needed for database features
 
   ],
   providers: [

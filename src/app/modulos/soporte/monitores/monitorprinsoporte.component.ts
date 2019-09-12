@@ -26,8 +26,8 @@ import {GridComponent,GridDataResult,PageChangeEvent,DataStateChangeEvent} from 
 import { SortDescriptor, orderBy } from '@progress/kendo-data-query';
 import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { EditService } from '../../../services/Editsoporte.service';
-import { Incidente } from '../modeldatoincidente';
-// import { Incidente } from './model';
+import { Usuarioreg } from '../modeldatousuarioreg';
+// import { Usuarioreg } from './model';
 @Component({
   selector: 'app-monitorprinsoporte',
   templateUrl: './monitorprinsoporte.component.html',
@@ -37,11 +37,10 @@ export class MonitorPrinSoporteComponent implements OnInit {
   @ViewChild('tabstrip') public tabstrip: TabStripComponent;
   @Input() vparcaptura: string;
   @Input() vid: any;
-//incidentes
-  cargo_incidentes = true;
-  incidentespen: any;
-  incidentescerrados: any;
-
+//Registusuar
+  cargo_registusuar = true;
+  regisusuarpen: any;
+  regisusuaractivos: any;
   public state: State = {
     skip: 0,
     take: 30
@@ -50,8 +49,7 @@ export class MonitorPrinSoporteComponent implements OnInit {
     skip: 0,
     take: 30
   };
-  
-  ejengoninit = false;
+    ejengoninit = false;
 public multiple = true;
 public allowUnsort = true;
 public sort: SortDescriptor[] = [{
@@ -62,7 +60,6 @@ public sortcerrados: SortDescriptor[] = [{
   field: 'fecha',
   dir: 'desc'
 }];
-
 segper_consultar = false;
 segper_adicionar = false;
 segper_modificar = false;
@@ -71,9 +68,9 @@ public filter: CompositeFilterDescriptor;
 public filtercerrados: CompositeFilterDescriptor;
 
 // public gridData: GridDataResult;
-public gridData: any[] = filterBy(this.incidentespen, this.filter);
-public gridDatacerrados: any[] = filterBy(this.incidentescerrados, this.filtercerrados);
-public editDataItem: Incidente;
+public gridData: any[] = filterBy(this.regisusuarpen, this.filter);
+public gridDataactivos: any[] = filterBy(this.regisusuaractivos, this.filtercerrados);
+public editDataItem: Usuarioreg;
 public isNew: boolean;
 public editService: EditService;
 public resultalert;
@@ -94,12 +91,12 @@ public resultalert;
   // Manejo panel de informacion
   infopanelselec: string;
   mostrarmensaje=false;
-  puedecrearincidente= true;
+  puedecrearusuarioreg= true;
 
   pruebavininumbuscombog:string = "";
   llamabusqueda = false;
   pruellegallabusque:string="";
-
+  llaveEmail = '';
 
 
 
@@ -126,7 +123,7 @@ public resultalert;
   public dataStateChange(state: DataStateChangeEvent): void {
     console.log(" dataStateChange");
     this.state = state;
-    // this.gridData = process(this.incidentespen, this.state);
+    // this.gridData = process(this.regisusuarpen, this.state);
 }
 public dataStateChangecerrados(state: DataStateChangeEvent): void {
   this.statecerrados = state;
@@ -134,27 +131,29 @@ public dataStateChangecerrados(state: DataStateChangeEvent): void {
 
 public filterChange(filter: CompositeFilterDescriptor): void {
   this.filter = filter;
-  this.gridData = filterBy(this.incidentespen, filter);
+  this.gridData = filterBy(this.regisusuarpen, filter);
 }
 
 public distinctPrimitive(fieldName: string): any {
-return distinct(this.incidentespen, fieldName).map(item => item[fieldName]);
+  // console.log('distinctPrimitive this.regisusuarpen:',this.regisusuarpen,fieldName);
+return distinct(this.regisusuarpen, fieldName).map(item => item[fieldName]);
 }
 public distinctPrimitiveCerrrados(fieldName: string): any {
-  return distinct(this.incidentescerrados, fieldName).map(item => item[fieldName]);
-  }
-  
+  // console.log('distinctPrimitiveCerrrados this.regisusuaractivos:',this.regisusuaractivos,fieldName);
+return distinct(this.regisusuaractivos, fieldName).map(item => item[fieldName]);
+}
+
 public filterChangecerrados(filter: CompositeFilterDescriptor): void {
   this.filtercerrados = filter;
-  this.gridDatacerrados = filterBy(this.incidentescerrados, filter);
+  this.gridDataactivos = filterBy(this.regisusuaractivos, filter);
 }
 
 public distinctPrimitivecerrados(fieldName: string): any {
-return distinct(this.incidentescerrados, fieldName).map(item => item[fieldName]);
+return distinct(this.regisusuaractivos, fieldName).map(item => item[fieldName]);
 }
 
+  public onPanelChange(data: Array<PanelBarItemModel>): boolean {
 
-public onPanelChange(data: Array<PanelBarItemModel>): boolean {
     // // public onPanelChange(event: any) { 
     // //console.log("onPanelChange: ", event); 
     // //console.log("onPanelChange");
@@ -207,23 +206,24 @@ public onPanelChange(data: Array<PanelBarItemModel>): boolean {
     }
     // this.cargaparametrosbasicos();
     // this.generaticket();
-    this.service.getIncidentePendientesFB().subscribe((datos:any) =>{
-      console.log('Incidentes leidos ', datos);
+    this.service.getregistrosusuarPendientesFB().subscribe((datos:any) =>{
+      console.log('Registusuar leidos ', datos);
       if (datos){
-        this.incidentespen = datos;
-        this.gridData = filterBy(this.incidentespen, this.filter);
-        console.log(this.incidentespen);            
-        this.service.getIncidenteCerradosFB().subscribe((datos:any) =>{
-          console.log('Incidentes cerrados ', datos);
+        this.regisusuarpen = datos;
+        this.gridData = filterBy(this.regisusuarpen, this.filter);
+        console.log(this.regisusuarpen);            
+        this.service.getregistrosusuarActivosFB().subscribe((datos:any) =>{
+          console.log('Registusuar cerrados ', datos);
           if (datos){
             this.cargando = false;
             this.resultados = true;
-             this.cargo_incidentes = true;
-            this.incidentescerrados = datos;
-            this.gridDatacerrados = filterBy(this.incidentescerrados, this.filtercerrados);
-            console.log(this.incidentescerrados);            
+             this.cargo_registusuar = true;
+            this.regisusuaractivos = datos;
+            this.gridDataactivos = filterBy(this.regisusuaractivos, this.filtercerrados);
+            console.log(this.regisusuaractivos);            
           }
-        });    
+        });
+    
       }
     });
   }
@@ -294,51 +294,16 @@ public onPanelChange(data: Array<PanelBarItemModel>): boolean {
     } 
   }
 
-  retornaRutacotiza() {
-    return '/cotizacion'+ '/VPARCOTIZACRM_C/0' +  '/' +  '0/' + '0/A/na/na';
-  }
-
+  
   
 
-  retornaRutaVendedor(ppersona) {
-    //  console.log('Retorna ruta ', ppersona);
-    //   return '/monitorvendedor/VPARVENDEDORES/' + ppersona.cod_person;
-  }
-  
-  generaticket(){
-    const numticket = this.service.generanumTicket();
-    const datosinciden = {
-      ticket: numticket,
-      nit_empre: this.service.empreFb.Nit,
-      nom_empre: this.service.empreFb.Empresa,
-      asunto: 'Al ingres',
-      detalle: 'No puedo ingresar... .',
-      prioridad: 'Alta',
-      reportarnetsolin: false,
-      solucionado: false,
-      cusuareporta: this.service.usuarFb.id,
-      nomusuarreporta: this.service.usuarFb.nombre,
-      fecha: new Date(),
-      fechaevalua: new Date(),
-      usuarevalua: '',
-      evaluado: true,
-      reportadoanetsolin: false,
-      solucionaevaluador: false,
-      usuarrepornetsolin: '',
-      fecharepornetsolin: new Date(),
-      solucionetsolin: false,
-      fechasolucionado: new Date(),
-      conssoluciono: ''
-    };
-    this.service.addIncidenteFb(numticket,datosinciden);
-  }
   editClick(event){
 
   }
   public monitorClick(dataItem): void {
     console.log('monitorclick ', dataItem);
     var pruta = `/monitorincidencia/${dataItem.nit_empre}/${dataItem.ticket}/`;
-    console.log("ir a monitor incidente:" + pruta);
+    console.log("ir a monitor usuarioreg:" + pruta);
     this.router.navigate([pruta]);
   }
 
@@ -358,14 +323,30 @@ public verRegK(dataItem): void {
 }
 public sortChange(sort: SortDescriptor[]): void {
   this.sort = sort;
-  this.gridData = orderBy(this.incidentespen, this.sort);
-  // this.gridData = filterBy(this.incidentespen, this.filter);
+  this.gridData = orderBy(this.regisusuarpen, this.sort);
+  // this.gridData = filterBy(this.regisusuarpen, this.filter);
   // this.loadProducts();
 }
 public sortChangecerrados(sort: SortDescriptor[]): void {
   this.sortcerrados = sort;
-  this.gridDatacerrados = orderBy(this.incidentescerrados, this.sortcerrados);
+  this.gridDataactivos = orderBy(this.regisusuaractivos, this.sortcerrados);
 }
+public colorxinitrabajo(code: boolean): SafeStyle {
+  let result;
+
+  switch (code) {
+   case true :
+     result = '#B2F699';
+     break;
+  //  case false :
+  //    result = '#FFBA80';
+  //    break;
+   default:
+     result = 'transparent';
+     break;
+  }
+  return this.sanitizer.bypassSecurityTrustStyle(result);
+  }
 
 public colorCode(code: boolean): SafeStyle {
   let result;
@@ -385,19 +366,20 @@ public colorCode(code: boolean): SafeStyle {
   }
 
   public addHandler() {
-    this.editDataItem = new Incidente();
-    this.editDataItem.ticket = this.service.generanumTicket();
-    this.editDataItem.fecha = new Date();
-    this.editDataItem.nit_empre = this.service.empreFb.Nit;
-    this.editDataItem.nom_empre = this.service.empreFb.Empresa;
-    this.editDataItem.cusuareporta = this.service.usuarFb.id;
-    this.editDataItem.nomusuarreporta = this.service.usuarFb.nombre;
+    this.editDataItem = new Usuarioreg();
+    // this.editDataItem.ticket = this.service.generanumTicket();
+    // this.editDataItem.fecha = new Date();
+    // this.editDataItem.nit_empre = '';
+    // this.editDataItem.nom_empre = '';
+    // this.editDataItem.cusuareporta = '';
+    // this.editDataItem.nomusuarreporta = '';
 
     this.isNew = true;
 }
 
 public editHandler({dataItem}) {
     this.editDataItem = dataItem;
+    this.llaveEmail = dataItem.Email;
     this.isNew = false;
 }
 
@@ -405,70 +387,28 @@ public cancelHandler() {
     this.editDataItem = undefined;
 }
 
-public saveHandler(incidente: Incidente) {
-    console.log('a grabar ',incidente,this.isNew, this.editDataItem);
-    // incidentgrabar = new Incidente();
-    if (this.isNew){
-      const numticket = this.service.generanumTicket();
-      const datosinciden = {
-        ticket: numticket,
-        nit_empre: this.service.empreFb.Nit,
-        nom_empre: this.service.empreFb.Empresa,
-        asunto: incidente.asunto,
-        detalle: incidente.detalle,
-        prioridad: incidente.prioridad,
-        reportarnetsolin: false,
-        solucionado: false,
-        cusuareporta: this.service.usuarFb.id,
-        nomusuarreporta: this.service.usuarFb.nombre,
-        fecha: new Date(),
-        fechaevalua: new Date(),
-        usuarevalua: '',
-        evaluado: false,
-        reportadoanetsolin: false,
-        solucionaevaluador: false,
-        usuarrepornetsolin: '',
-        fecharepornetsolin: new Date(),
-        solucionetsolin: false,
-        fechasolucionado: new Date(),
-        nivelcriticidad: incidente.nivelcriticidad,
-        productoprin: incidente.productoprin,
-        canaling:'web',
-        conssoluciono: '',        
-        solucion: '',
-        seasignocons: false,
-        consasignado:'',
-        fechaasignado: new Date(),
-        iniciotrabajo: false,
-        fechainitrabajo: new Date()
-      };
-      console.log(datosinciden, this.service.usuarFb, this.service.empreFb);
-      this.service.addIncidenteFb(numticket,datosinciden);      
-      this.service.regLogincidenteFb(datosinciden, true, 'Adicionado','Se adiciono Incidente', false);
-    } else {
-      this.editDataItem.asunto = incidente.asunto;
-      this.editDataItem.detalle = incidente.detalle;  
-      this.editDataItem.prioridad = incidente.prioridad;  
-      this.editDataItem.nivelcriticidad = incidente.nivelcriticidad;  
-      this.editDataItem.productoprin = incidente.productoprin;  
-      this.editDataItem.canaling = 'web';  
-      this.editDataItem.solucion = '';  
-      this.service.actIncidenteFb(this.editDataItem.ticket, this.editDataItem);
-      this.service.regLogincidenteFb(this.editDataItem, true, 'Modificado','Se modifico Incidente', false);
+public saveHandler(usuarioreg: Usuarioreg) {
+    console.log('a grabar ',usuarioreg,this.isNew, this.editDataItem);
+      this.editDataItem.id_empresa = usuarioreg.id_empresa;
+      this.editDataItem.Empresa = usuarioreg.Empresa;  
+      this.editDataItem.Nombre = usuarioreg.Nombre;  
+      this.editDataItem.Vista = usuarioreg.Vista;  
+      this.editDataItem.Pedido = usuarioreg.Pedido;  
+      this.editDataItem.Email = this.llaveEmail;  
+      this.service.actUsuarioregFb(this.llaveEmail, this.editDataItem);
+      this.service.regLogusuarioregFb(this.editDataItem,'Modificado','Se modifico usuario registrado');
       console.log('editar ', this.editDataItem);
-    }
-
-    // this.service.grabarincidenteFb(this.editDataItem, this.isNew);
+    // this.service.grabarusuarioregFb(this.editDataItem, this.isNew);
 
     this.editDataItem = undefined;
 }
 
 public removeHandler({dataItem}) {
     // this.editService.remove(dataItem);
-    if (dataItem.solucionado || dataItem.evaluado){
-      this.showAlerta('Advertencia', 'No se puede eliminar si esta evaluado o solucionado');
+    if (dataItem.solucionado || dataItem.seasignocons ){
+      this.showAlerta('Advertencia', 'No se puede eliminar si esta asignado o cerrado');
     } else {
-    this.service.deleteIncidenteFb(dataItem.ticket);
+    this.service.deleteUsuarioregFb(dataItem.ticket);
     }
 }
 public showAlerta(ptitulo, palerta) {

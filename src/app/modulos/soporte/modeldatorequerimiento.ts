@@ -21,7 +21,7 @@ export class Requerimiento {
     public modulo = '';
     public asignado = false;
     public asignadoa = '';
-    public fechaasignado = new Date(); 
+    public fechaasignado = new Date();
     public iniciotrabajo = false;
     public fintrabajo = false;
     public fechainitrabajo = new Date();

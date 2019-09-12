@@ -30,6 +30,52 @@
                     filterLteOperator="es menor o igual que" filterNotContainsOperator="No contiene" filterNotEqOperator="No es igual a" filterStartsWithOperator="comienza con" groupPanelEmpty="Gupo Vacío" NoRecords="sin registros" pagerFirstPage="Primera página"
                     pagerLastPage="Ultima" pagerNextPage="Siguiente" pagerPreviousPage="Anterior" pagerPage="Página" pagerOf="de" pagerItems="ítems" pagerItemsPerPage="ítems por página">
                 </kendo-grid-messages>
+                <div *ngIf="ptablab=='COTIZACRM_C'">
+                    <kendo-grid-column field="num_dcotiz" title="Número" [sortable]="true">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <!-- <a (routerLink)="retornaRutaCotiza(dataItem)">{{ dataItem.cod_dcotiz+' | '+dataItem.num_dcotiz+' Ver:'+dataItem.id_version }}</a> -->
+                            <a (click)="monitorClick(dataItem)">{{ dataItem.cod_dcotiz+' | '+dataItem.num_dcotiz+' Ver:'+dataItem.id_version }}</a>
+
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="fec_dcotiz" title="Fecha" [sortable]="true">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{ dataItem.fec_dcotiz | date:'dd.MM.yyyy' }}
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="cliente" title="Cliente" [sortable]="true">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            {{ dataItem.cliente }}
+                        </ng-template>
+                    </kendo-grid-column>
+                    <kendo-grid-column field="estado" title="Estado" [sortable]="true">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div innerHtml="{{ retornaEstado(dataItem.estado_c,dataItem.est_cap) }}"></div>
+                            <!-- {{ retornaEstadocapturacotiza(dataItem.est_cap) }} -->
+                        </ng-template>
+                    </kendo-grid-column>
+                    <!-- <kendo-grid-column field="estado_c" title="Cierre" [sortable]="true">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div innerHtml="{{ retornaEstadocierrecotiza(dataItem.estado_c) }}"></div>
+
+                        </ng-template>
+                    </kendo-grid-column> -->
+
+                </div>
+                <div *ngIf="ptablab!='COTIZACRM_C'">
+                    <div *ngFor="let field of camposv">
+                        <kendo-grid-column field="{{field.campo}}" title="{{field.titulo}}" format="{{field.format}}" [sortable]="true">
+                        </kendo-grid-column>
+                    </div>
+                </div>
+                <kendo-grid-command-column title="Opciones" width="120">
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <!-- <i *ngIf="segper_consultar && confirmado != rowIndex && !es_cotiza" (click)="verRegK(dataItem)" class="fa fa-eye fa-lg manteconsulta" data-toggle="tooltip" title="Click para consultar el registro."></i> -->
+                        <i *ngIf="ptablab!='CONTACTOS' && segper_consultar && confirmado != rowIndex" (click)="monitorClick(dataItem)" class="fa fa-bar-chart fa-lg mantenimiento" data-toggle="tooltip" title="Click para ir al monitor."></i>
+                        <i *ngIf="ptablab=='CONTACTOS' && segper_consultar && confirmado != rowIndex" (click)="verRegK(dataItem)" class="fa fa-eye fa-lg manteconsulta" data-toggle="tooltip" title="Click para consultar el registro."></i>
+
+                    </ng-template>
+                </kendo-grid-command-column>
 
             </kendo-grid>
         </div>

@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
 
 import { MantbasicaService } from '../../../services/mantbasica.service';
 import { MantablasLibreria } from '../../../services/mantbasica.libreria';

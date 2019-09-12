@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-   import { Observable } from 'rxjs';
+   import { Observable } from 'rxjs/Observable';
    import { AngularFireDatabase } from '@angular/fire/database';
-import { Incidente } from '../modulos/soporte/modeldatoincidente';
+import { Usuarioreg } from '../modulos/soporte/modeldatousuarioreg';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 
    @Injectable()
@@ -13,10 +13,10 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
         public grabarFb(data: any, isNew?: boolean) {
             console.log('save fb ', data, isNew);
             if(isNew){
-             this.fbDb.collection(`/incidentes`)
+             this.fbDb.collection(`/usuarioregs`)
              .doc(data.ticket).set(data);
             }else{
-             this.fbDb.collection(`/incidentes`)
+             this.fbDb.collection(`/usuarioregs`)
              .doc(data.ticket).update(data);
             }        
         }
@@ -47,6 +47,6 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
        }
 
        public resetData(){
-           this.db.database.ref('/').set(Incidente);
+           this.db.database.ref('/').set(Usuarioreg);
        }
    }

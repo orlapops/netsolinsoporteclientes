@@ -10,7 +10,7 @@ import {
 } from "@angular/forms";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import { Location } from "@angular/common";
-import { Observable } from "rxjs";
+import { Observable } from "rxjs/Rx";
 
 import { process, State } from "@progress/kendo-data-query";
 import {

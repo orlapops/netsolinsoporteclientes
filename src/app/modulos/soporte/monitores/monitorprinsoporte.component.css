@@ -4,6 +4,12 @@ agm-map {
     width: 700px; */
 }
 
+.whole-cell {
+    display: block;
+    padding: 8px 12px;
+    /* depends on theme */
+}
+
 .clickmonitor {
     color: #3665e6;
     cursor: pointer;

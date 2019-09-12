@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
 
 import { MantbasicaService } from '../../../services/mantbasica.service';
 import { NetsolinApp } from '../../../shared/global';
@@ -101,6 +101,10 @@ export class ListbusquedamodalComponent implements OnInit {
         // console.log("ejengoninit:");
         // console.log(this.ejengoninit);
         this.ejengoninit = true;
+        //si es cotización marca para adicionar y monitor manejar diferente
+        if (this.objeto=='CRMCOTIZA'){
+            this.es_cotiza = true;
+        }
         //INICIALIZAR en blanco tabla de trabajo
         localStorage.setItem('NETMTABLA', "");
         this.resultados = false;
@@ -113,8 +117,20 @@ export class ListbusquedamodalComponent implements OnInit {
             this.loaddiccionarios();
         });
     }
-
+public retornaRutaCotiza(dataItem) {
+    var pruta = '/cotizacion/VARPARCOTIZACRM_C/0/0/0/E/';
+    var pvalc = this.retornaValcampo(dataItem, 'C');
+    pruta = pruta+pvalc;
+    // console.log('Ruta cotiza: '+pruta);
+    return pruta
+}
     public monitorClick(dataItem): void {
+        if (this.es_cotiza){
+            var pruta = '/cotizacion/VARPARCOTIZACRM_C/0/0/0/E/';
+            var pvalc = this.retornaValcampo(dataItem, 'C');
+            pruta = pruta+pvalc;
+            this.router.navigate([pruta]);
+        } else {
             // console.log('this.prefopermant:'+this.prefopermant);
         var vpref = ((this.prefopermant == '') ? 'basica' : this.prefopermant);
         // console.log("ir a monitor vpref:" + vpref);
@@ -125,6 +141,7 @@ export class ListbusquedamodalComponent implements OnInit {
         var pvalc = this.retornaValcampo(dataItem, 'C');
         // console.log("pvalc:" + pvalc);
         this.router.navigate([pruta, pvalc]);
+        }
 
     }
 

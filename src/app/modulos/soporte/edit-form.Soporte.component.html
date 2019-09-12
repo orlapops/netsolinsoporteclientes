@@ -1,60 +1,66 @@
+<!-- <kendo-splitter-pane> -->
+<!-- <kendo-tabstrip [ngStyle]="{'width': '400px'}">
+    <kendo-tabstrip-tab [title]="'Información'" [selected]="true">
+        <ng-template kendoTabContent> -->
 <div class="row">
-    <kendo-dialog *ngIf="active" (close)="closeForm()" [minWidth]="250" [width]="650" [height]="600">
+    <kendo-dialog *ngIf="active" (close)="closeForm()" [minWidth]="250" [width]="700">
         <kendo-dialog-titlebar>
-            {{ isNew ? 'Add nuevo caso' : 'Editar caso' }}
+            Autorizar Usurio Catlogo Cliente
         </kendo-dialog-titlebar>
 
         <form novalidate [formGroup]="editForm">
-            <div class="form-group">
-                <label for="asunto" class="control-label">Asunto</label>
-
-                <input type="text" class="k-textbox" formControlName="asunto" />
-
-                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.asunto.valid || editForm.controls.asunto.pristine">
-                    Asunto es requerido
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label> Autoriza usar App
+                                                        <kendo-switch formControlName="Vista"
+                                                        [onLabel]="'Si'"
+                                                        [offLabel]="'No'"
+                                                        ></kendo-switch>                                                            
+                                                </label>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div>
-                    <label for="detalle" class="control-label">Detalle</label>
-                </div>
-                <textarea rows="15" cols="110" formControlName="detalle"></textarea>
-                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.detalle.valid || editForm.controls.detalle.pristine">
-                    Detalle es requerido
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                    <label>                
-                    Se presente en
-                    <kendo-dropdownlist [data]="service.productosprin" [textField]="'nombre'" [valueField]="'id'" isRequired="true" [defaultItem]="{ id: null , nombre: 'Seleccione uno' }" formControlName="productoprin" [valuePrimitive]="true">
-                    </kendo-dropdownlist>
-                </label>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label> Hacer Pedidos
+                                                        <kendo-switch formControlName="Pedido"
+                                                        [onLabel]="'Si'"
+                                                        [offLabel]="'No'"
+                                                        ></kendo-switch>                                                            
+                                                </label>
+                    </div>
                 </div>
             </div>
 
+
             <div class="form-group">
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                    <label>
-                        Prioridad
-                        <kendo-dropdownlist
-                            formControlName="prioridad"
-                            isRequired="true"
-                            [data]="listprioridades"
-                            [value]="Baja"
-                            required
-                        >
-                        </kendo-dropdownlist>
-                    </label>
+                <label for="id_empresa" class="control-label">Nit</label>
+                <input type="text" class="k-textbox" formControlName="id_empresa" />
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.id_empresa.valid || editForm.controls.id_empresa.pristine">
+                    Nit Empresa es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Empresa" class="control-label">Empresa</label>
+                <input type="text" class="k-textbox" formControlName="Empresa" />
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.Empresa.valid || editForm.controls.Empresa.pristine">
+                    Empresa es requerido
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Nombre" class="control-label">Usuario</label>
+                <input type="text" class="k-textbox" formControlName="Nombre" />
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.Nombre.valid || editForm.controls.Nombre.pristine">
+                    Usuario es requerido
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-6 col-md-6">
-                    <label>                
-                    Nivel Criticidad
-                    <kendo-dropdownlist [data]="service.nivelescriticidad" [textField]="'descripcion'" [valueField]="'nivel'" isRequired="true" [defaultItem]="{ nivel: null , descripcion: 'Seleccione nivel' }" formControlName="nivelcriticidad" [valuePrimitive]="true">
-                    </kendo-dropdownlist>
-                </label>
+                <label for="Email" class="control-label">Email</label>
+                <input type="text" class="k-textbox" formControlName="Email" />
+                <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.Email.valid || editForm.controls.Email.pristine">
+                    Email es requerido
                 </div>
             </div>
         </form>
@@ -65,3 +71,20 @@
         </kendo-dialog-actions>
     </kendo-dialog>
 </div>
+<!-- </ng-template>
+    </kendo-tabstrip-tab>
+    <kendo-tabstrip-tab [title]="'Archivos'">
+        <ng-template kendoTabContent>
+            <h3 class="divprincipal alert-muted text-center">
+                Estadisticas del Cliente Potencial. En desarrollo. Muy pronto
+            </h3>
+            <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-8">
+                </div>
+            </div>
+        </ng-template>
+    </kendo-tabstrip-tab>
+</kendo-tabstrip> -->
+<!-- </kendo-splitter-pane> -->

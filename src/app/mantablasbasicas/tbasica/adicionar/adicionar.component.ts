@@ -1,7 +1,7 @@
 import { Component, VERSION, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, FormArray, FormBuilder, Validators, ValidatorFn } from '@angular/forms';
-import { Observable } from 'rxjs';
-
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
 
 import { Router, ActivatedRoute } from '@angular/router';
 import { MantbasicaService } from '../../../services/mantbasica.service';

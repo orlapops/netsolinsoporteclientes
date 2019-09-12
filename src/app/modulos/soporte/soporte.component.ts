@@ -178,25 +178,30 @@ export class SoporteComponent implements OnInit {
                     this.service.cargo_empre = true;
                     this.service.empreFb = datos;
                     console.log(this.service.empreFb);
-                    //verificar usuario actual este creado
-                    this.service
-                      .VeriUsuarioaActualFb(NetsolinApp.oapp.cuserid)
-                      .then(() => {
-                        //Se suscribe datos usuario
-                        this.service
-                          .getUsuarFB(NetsolinApp.oapp.cuserid)
-                          .subscribe((datos: any) => {
-                            console.log("datos getUsuarFB ", datos);
-                            if (datos) {
-                              this.service.cargo_usuar = true;
-                              this.service.usuarFb = datos;
-                              console.log(this.service.usuarFb);
-                              this.cargaparametrosbasicos().then(() => {
-                                resolve(true);
-                              });
-                            }
-                          });
-                      });
+                    this.service.cargo_usuar = true;
+                    resolve(true);
+
+                    //OJO CAMBIO PARA SOPORTE EN NETSOLIN
+                    //verificar usuario actual como consultor este creado
+                    // console.log('usuario a buscar ',NetsolinApp.oapp.cuserid);
+                    // this.service
+                    //   .VeriConsultorActualFb(NetsolinApp.oapp.cuserid)
+                    //   .then(() => {
+                    //     console.log('usuario a buscar ',NetsolinApp.oapp.cuserid);
+                    //     this.service
+                    //       .getUsuarFB(NetsolinApp.oapp.cuserid)
+                    //       .subscribe((datos: any) => {
+                    //         console.log("datos getUsuarFB ", datos);
+                    //         if (datos) {
+                    //           this.service.cargo_usuar = true;
+                    //           this.service.usuarFb = datos;
+                    //           console.log(this.service.usuarFb);
+                    //           this.cargaparametrosbasicos().then(() => {
+                    //             resolve(true);
+                    //           });
+                    //         }
+                    //       });
+                    //   });
                   }
                 });
             });
@@ -229,17 +234,35 @@ export class SoporteComponent implements OnInit {
     return new Promise(resolve => {
     this.service.cargoparametrosb = false;
     this.service.getNivelescriticidadFB().subscribe((datos:any) =>{
-      console.log('getNivelescriticidadFB leidos ', datos);
+      // console.log('getNivelescriticidadFB leidos ', datos);
       if (datos){
         this.service.nivelescriticidad = datos;
         console.log(this.service.nivelescriticidad);            
         this.service.getProductosFB().subscribe((datos:any) =>{
-            console.log('getProductosFB leidos ', datos);
+            // console.log('getProductosFB leidos ', datos);
             if (datos){
-              this.service.cargoparametrosb = true;
-              this.service.productosprin = datos;
-              resolve(true);
-              console.log(this.service.productosprin);            
+              this.service.productosprin = datos;          
+              this.service.getClientesFB().subscribe((datos:any) =>{
+                // console.log('getClientesFB leidos ', datos);
+                if (datos){
+                  this.service.clientes = datos;          
+                  this.service.getConsultoresFB().subscribe((datos:any) =>{
+                    // console.log('getConsultoresFB leidos ', datos);
+                    if (datos){
+                      this.service.consultores = datos;          
+                      this.service.getModulosFB().subscribe((datos:any) =>{
+                        // console.log('getModulosFB leidos ', datos);
+                        if (datos){
+                          this.service.cargoparametrosb = true;        
+                          this.service.modulos = datos;          
+                          resolve(true);
+                          // console.log(this.service.modulos);            
+                        }
+                      });                          
+                    }
+                  });     
+                }
+              });      
             }
           });  
       }

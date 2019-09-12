@@ -53,7 +53,7 @@ export class AppheaderComponent implements OnInit {
       // console.log('nomusuar: '+NetsolinApp.oapp.nomusuar);
       // console.log('superusuar: '+NetsolinApp.oapp.superusuar);
       // console.log('nom_empresa: '+NetsolinApp.oapp.nom_empresa);
-      console.log('nit_empresa: '+NetsolinApp.oapp.nit_empresa);
+      // console.log('nit_empresa: '+NetsolinApp.oapp.nit_empresa);
 
       this.headerNetsolin = localStorage.getItem('HeaderNetsolin');
       let lvar = '';
@@ -146,7 +146,7 @@ export class AppheaderComponent implements OnInit {
       });
   }
   loadhtmlmenuresumchat() {
-    this.service.getChatResumFB(NetsolinApp.oapp.nit_empresa)
+    this.service.getChatResumFB()
       .subscribe(result => {
         console.log('trae chat resum',result);
         this.pchatincident = result;
@@ -160,6 +160,7 @@ export class AppheaderComponent implements OnInit {
         // this.showError(error);
       });
   }
+
 
   loadhtmlmenuprocesos() {
     this.service.getNetsolinProcesos()
@@ -194,24 +195,13 @@ export class AppheaderComponent implements OnInit {
     console.log('monitorclick ', dataItem);
     if (dataItem.tipo=='I'){
       var pruta = `/monitorincidencia/${dataItem.nit_empre}/${dataItem.ticket}/`;
-      console.log("ir a monitor incidente:" + pruta);
+      console.log("ir a monitor usuarioreg:" + pruta);
       this.router.navigate([pruta]);
     } else {
       var pruta = `/monitorrequerimiento/${dataItem.nit_empre}/${dataItem.ticket}/`;
       console.log("ir a monitor requer:" + pruta);
       this.router.navigate([pruta]);
-
     }
   }
-
-  // retornaRuta(precordat)
-  //   // console.log(this.rutamant);
-  //   if (precordat.tipo=='I'){
-  //     return '/' + this.rutamant;
-  //   } else {
-
-  //   }
-  // }
-
 }
 

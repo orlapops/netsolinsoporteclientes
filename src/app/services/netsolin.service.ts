@@ -1,7 +1,8 @@
-
-import {throwError as observableThrowError,  Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+// import { Http, Response, Headers, RequestOptions } from '@angular/http';
+// import 'rxjs/add/operator/map';
+import { Observable } from 'rxjs/Observable';
 
 import { catchError, map, tap } from 'rxjs/operators';
 import { NetsolinApp } from '../shared/global';
@@ -10,8 +11,8 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { AngularFireStorage,  AngularFireStorageReference } from '@angular/fire/storage';
 
 import { pipe } from '@angular/core/src/render3/pipe';
-// import { Observable } from 'rxjs/Observable';
-import { Incidente } from '../modulos/soporte/modeldatoincidente';
+// import { Observable } from 'rxjs';
+import { Usuarioreg } from '../modulos/soporte/modeldatousuarioreg';
 
 @Injectable()
 export class NetsolinService {
@@ -99,11 +100,11 @@ cargaPeriodoUsuar(pcod_usuar){
 		// console.error('Error en servidor:', error);
 		if (error.error instanceof Error) {
 			let errMessage = error.error.message;
-			return observableThrowError(errMessage);
+			return Observable.throw(errMessage);
 			// Use the following instead if using lite-server
 			//return Observable.throw(err.text() || 'backend server error');
 		}
-		return observableThrowError(error || 'Node.js server error');
+		return Observable.throw(error || 'Node.js server error');
 	}
 
 	getNetsolinslide(): Observable<any> {
@@ -268,23 +269,7 @@ cargaPeriodoUsuar(pcod_usuar){
 			);
 	}
 
-	public getCasofrecuentesFB(){
-		return this.fbDb
-		.collection(`/casosfrecuentes`
-		,ref => ref.where('verificado', '==', true)
-		.where('publicarcliente', '==', true))
-	 .valueChanges()
-	 .pipe(
-		map(actions =>
-			actions.map((a: any) => {
-				// console.log(a);
-				a.fecha = a.fecha.toDate();
-				return a;
-			})
-		)
-	 );
-	}
-	
+
 
 	//Verifica si variable VPAR... que se usa como parametros en localsotrage este creada si no la crea
 	//ejemplo para llamado en monitores sin que tengan que ingresar primero a la tabla basica
@@ -489,11 +474,11 @@ fechacad(fechaf){
  public VeriExisteEmpresaActualFb(id){
 	return new Promise( (resolve) => {
 	console.log(id);
-	const ref: AngularFirestoreDocument<any> = this.fbDb.collection(`clientes`).doc(id);
+	const ref: AngularFirestoreDocument<any> = this.fbDb.collection(`empresas`).doc(id);
 	ref.get().subscribe(snap => {
 		if (snap.exists) {
 			console.log('Existe', id);
-			this.fbDb.collection(`/clientes`)
+			this.fbDb.collection(`/empresas`)
 			.doc(id).update({datosoapp: this.oappNetsolin});
 			// this.empreFb = ref.valueChanges();
 			// this.cargo_empre = true;
@@ -505,7 +490,7 @@ fechacad(fechaf){
 				nombre: NetsolinApp.oapp.nom_empresa,
 				datosoapp: this.oappNetsolin
 			}
-			this.fbDb.collection(`/clientes`)
+			this.fbDb.collection(`/empresas`)
 			.doc(id).set(objempre);
 			console.log('no existe crear',id);
 			resolve(true);
@@ -517,7 +502,7 @@ fechacad(fechaf){
 			public getEmpreFB(Id: string) {
 				console.log('en getEmpreFB');
 			return this.fbDb
-				.collection(`/clientes`)
+				.collection(`/empresas`)
 			 .doc(Id).valueChanges();
 			}
  //Verifica usuario actual en firebase si no existe la crea
@@ -552,13 +537,59 @@ fechacad(fechaf){
 	});
 });
 }
+//Verifica usuario actual existe como consultor
+public VeriConsultorActualFb(idusuar){
+	return new Promise( (resolve) => {
+		console.log(idusuar);
+		const ref: AngularFirestoreDocument<any> = this.fbDb.collection(`consultores`).doc(idusuar);
+		ref.get().subscribe(snap => {
+			if (snap.exists) {
+				console.log('Existe usuario', idusuar);
+				// this.fbDb.collection(`/clientes`)
+				// .doc(id).update({datosoapp: this.oappNetsolin});
+				resolve(true);
+			} else {
+				console.log('no existe consultor crear',idusuar, NetsolinApp, this.oappNetsolin);
+				const objempre = {
+					id: NetsolinApp.oapp.cuserid,
+					email: this.oappNetsolin.email_usuar,
+					nombre: this.oappNetsolin.nomusuar,
+					superusuar: this.oappNetsolin.superusuar
+				}
+				console.log('usuario a crea',idusuar,objempre);
+				this.fbDb.collection(`/consultores`)
+				.doc(idusuar).set(objempre);
+				console.log('no existe crear',idusuar);
+				resolve(true);
+			}
+		});
+	});
+	
+}
       //Se suscribe a empresa para traerla de FB
 			public getUsuarFB(Id: string) {
-				console.log('en getUsuarFB');
+				console.log('en getUsuarFB', Id);
 			return this.fbDb
-				.collection(`/clientes/${NetsolinApp.oapp.nit_empresa}/usuarios`)
+				.collection(`/consultores`)
 			 .doc(Id).valueChanges();
 			}
+
+						
+      //Se suscribe a consultores
+			public getConsultoresFB() {
+				console.log('en getConsultoresFB');
+			return this.fbDb
+				.collection(`/consultores`)
+			 .valueChanges();
+			}			
+      //Se suscribe a clientes
+			public getClientesFB() {
+				console.log('en getClientesFB');
+			return this.fbDb
+				.collection(`/clientes`)
+			 .valueChanges();
+			}			
+
       //Se suscribe a empresa para traerla de FB
 			public getNivelescriticidadFB() {
 				console.log('en getNivelescriticidadFB');
@@ -573,7 +604,31 @@ fechacad(fechaf){
 				.collection(`/parametros/tablas/prodprincipales`)
 			 .valueChanges();
 			}			
-						
+      //Se suscribe a modulos
+			public getModulosFB() {
+				console.log('en getModulosFB');
+			return this.fbDb
+				.collection(`/parametros/tablas/modulos`)
+			 .valueChanges();
+			}			
+      //Se suscribe a causales clientes
+			public getCausalesclientesFB() {
+				console.log('en getCausalesclientesFB');
+			return this.fbDb
+				.collection(`/parametros/tablas/causalescliente`)
+			 .valueChanges();
+			}			
+      //Se suscribe a causales netsolin
+			public getCausalesnetsolinFB() {
+				console.log('en getCausalesnetsolinFB');
+			return this.fbDb
+				.collection(`/parametros/tablas/causalesnetsolin`)
+			 .valueChanges();
+			}			
+
+			
+
+
 			public generanumTicket(){
 				const now = new Date();
 				const dia = now.getDate();
@@ -586,19 +641,20 @@ fechacad(fechaf){
 				const numticket = ano.toString()+ mes.toString() + dia.toString() + hora.toString() + minutos.toString()+ segundos.toString()+numaleator.toString();
 				return numticket;			
 			}
-		public addIncidenteFb(idt, objincidente){
-			console.log('addincidente ', idt, objincidente);
-			// this.fbDb.collection(`/clientes/${NetsolinApp.oapp.nit_empresa}/incidentes`)
-			this.fbDb.collection(`/incidentes`)
-			.doc(idt).set(objincidente);
+		public addUsuarioregFb(idt, objusuarioreg){
+			console.log('addusuarioreg ', idt, objusuarioreg);
+			// this.fbDb.collection(`/clientes/${NetsolinApp.oapp.nit_empresa}/usuarioregs`)
+			this.fbDb.collection(`/usuarioregs`)
+			.doc(idt).set(objusuarioreg);
 		}
-		public AntaddArchivoIncidenteFb(pticket,idt, objarch){
-			console.log('addArchivoIncidenteFb ', idt, objarch);
-			this.fbDb.collection(`/incidentes/${pticket}/archivos`)
+
+		public AntaddArchivoUsuarioregFb(pticket,idt, objarch){
+			console.log('addArchivoUsuarioregFb ', idt, objarch);
+			this.fbDb.collection(`/usuarioregs/${pticket}/archivos`)
 			.doc(idt).set(objarch);
 		}
-		public addArchivoIncidenteFb(pticket,idt, nombre, nomarch, imageURL): Promise<any> {
-			console.log('addArchivoIncidenteFb', pticket,idt, nombre, nomarch, imageURL);
+		public addArchivoUsuarioregFb(pticket,idt, nombre, nomarch, imageURL): Promise<any> {
+			console.log('addArchivoUsuarioregFb', pticket,idt, nombre, nomarch, imageURL);
 			const now = new Date();
 			const dia = now.getDate();
 			const mes = now.getMonth() + 1;
@@ -608,7 +664,7 @@ fechacad(fechaf){
 			const segundos = now.getSeconds();
 			const idimg = ano.toString()+ mes.toString() + dia.toString() + hora.toString() + minutos.toString()+ segundos.toString();
 		
-			const storageRef: AngularFireStorageReference = this.afStorage.ref(`/incidentes/${pticket}/archivos/${nomarch}/`);
+			const storageRef: AngularFireStorageReference = this.afStorage.ref(`/usuarioregs/${pticket}/archivos/${nomarch}/`);
 			// console.log('en actualizafotosVisitafirebase idclie,iddirec: ', idclie, idvisita);
 			return storageRef
 				.put(imageURL)
@@ -624,7 +680,7 @@ fechacad(fechaf){
 								usuarcrea: this.usuarFb.nombre,
 								linkarch: linkref
 							}
-							this.fbDb.collection(`/incidentes/${pticket}/archivos`)
+							this.fbDb.collection(`/usuarioregs/${pticket}/archivos`)
 							.doc(idt).set(objarch);				
 							// console.log(`/personal/${this._parempre.usuario.cod_usuar}/rutas/
 							// ${this._visitas.visita_activa_copvdet.id_ruta}/periodos/${this._visitas.id_periodo}/visitas/${idvisita}/fotos`);
@@ -636,43 +692,57 @@ fechacad(fechaf){
 			});
 		}
 		
-		public actIncidenteFb(idt, objincidente){
-			// console.log('actIncidenteFb ', idt, objincidente);
-			// this.fbDb.collection(`/clientes/${NetsolinApp.oapp.nit_empresa}/incidentes`)
-			this.fbDb.collection(`/incidentes`)
-			.doc(idt).update(objincidente);
+		public actUsuarioregFb(idt, objusuarioreg){
+			console.log('actUsuarioregFb ', idt, objusuarioreg);
+			this.fbDb.collection(`/usuarios`)
+			.doc(idt).update(objusuarioreg);
 		}		
-		public actArchivoIncidenteFb(pticket,idt, objarch){
-			// console.log('actArchivoIncidenteFb ', idt, objarch);
-			this.fbDb.collection(`/incidentes/${pticket}/archivos`)
-			.doc(idt).update(objarch);
-		}			
-		public deleteIncidenteFb(idt){
-			// console.log('deleteIncidenteFb ', idt);
-			this.fbDb.collection(`/incidentes`)
-			.doc(idt).delete();
-		}		
-		public deleteArchivoIncidenteFb(pticket,idt){
-			// console.log('deleteArchivoIncidenteFb ', idt);
-			this.fbDb.collection(`/incidentes/${pticket}/archivos`)
+
+		public deleteUsuarioregFb(idt){
+			// console.log('deleteUsuarioregFb ', idt);
+			this.fbDb.collection(`/usuarioregs`)
 			.doc(idt).delete();
 		}		
 
-		public getIncidentePendientesFB(){
-			// .collection(`/clientes/${NetsolinApp.oapp.nit_empresa}/incidentes`
+		public deleteLogUsuarioregFb(pticket,idt){
+			this.fbDb.collection(`/usuarioregs/${pticket}/log`)
+			.doc(idt).delete();
+		}		
+
+		
+		public getregistrosusuarPendientesFB(){
 			return this.fbDb
-			.collection(`/incidentes`
-			,ref => ref.where('nit_empre', '==', NetsolinApp.oapp.nit_empresa)
-			.where('solucionado', '==', false))
+			.collection(`/usuarios`
+			,ref => ref.where('Vista', '==', false))
 		 .valueChanges()
 		 .pipe(
 			map(actions =>
 				actions.map((a: any) => {
 					// console.log(a);
-					a.fecha = a.fecha.toDate();
-					a.fechaevalua = a.fechaevalua.toDate();
-					a.fecharepornetsolin= a.fecharepornetsolin.toDate();
-					a.fechasolucionado = a.fechasolucionado.toDate();
+					// a.fecha = a.fecha.toDate();
+					// a.fechaevalua = a.fechaevalua.toDate();
+					// a.fecharepornetsolin= a.fecharepornetsolin.toDate();
+					// a.fechasolucionado = a.fechasolucionado.toDate();
+					return a;
+
+				})
+			)
+		 );
+		}
+		public getregistrosusuarActivosFB(){
+			// .collection(`/clientes/${NetsolinApp.oapp.nit_empresa}/usuarioregs`
+			return this.fbDb
+			.collection(`/usuarios`
+			,ref => ref.where('Vista', '==', true))			
+		 .valueChanges()
+		 .pipe(
+			map(actions =>
+				actions.map((a: any) => {
+					// console.log(a);
+					// a.fecha = a.fecha.toDate();
+					// a.fechaevalua = a.fechaevalua.toDate();
+					// a.fecharepornetsolin= a.fecharepornetsolin.toDate();
+					// a.fechasolucionado = a.fechasolucionado.toDate();
 					return a;
 
 				})
@@ -680,150 +750,20 @@ fechacad(fechaf){
 		 );
 		}
 
-		public getIncidenteCerradosFB(){
-			// .collection(`/clientes/${NetsolinApp.oapp.nit_empresa}/incidentes`
-			return this.fbDb
-			.collection(`/incidentes`
-			,ref => ref.where('nit_empre', '==', NetsolinApp.oapp.nit_empresa).where('solucionado', '==', true)
-			.limit(100))
-		 .valueChanges()
-		 .pipe(
-			map(actions =>
-				actions.map((a: any) => {
-					// console.log(a);
-					a.fecha = a.fecha.toDate();
-					a.fechaevalua = a.fechaevalua.toDate();
-					a.fecharepornetsolin= a.fecharepornetsolin.toDate();
-					a.fechasolucionado = a.fechasolucionado.toDate();
-					return a;
-
-				})
-			)
-		 );
-		}
-
-		public regChatincidenteFb(incidente: any, texto: string) {
-			//En libreria cliente maninterno siempre en falso ya que solo se maneja en lado de Netsolin
-					const now = new Date();
-					const dia = now.getDate();
-					const mes = now.getMonth() + 1;
-					const ano = now.getFullYear();
-					const hora = now.getHours();
-					const minutos = now.getMinutes();
-					const segundos = now.getSeconds();
-					const numaleator = Math.round(Math.random() * (1000 - 1999) + 1000);
-					const idchat = ano.toString()+ mes.toString() + dia.toString() + hora.toString() + minutos.toString()+ segundos.toString()+numaleator.toString();
-			
-					const regchat = {
-						id: idchat,
-						fecha: now,
-						cliente: true,
-						usuario: this.usuarFb.nombre,
-						texto: texto,
-						leido: false
-					}					
-					// console.log('save fb ', regchat);
-					 this.fbDb.collection(`/incidentes/${incidente.ticket}/chat`)
-					 .doc(idchat).set(regchat);
-					 //registro chat por incidente ultimo para alertas
-					 const idchatult = 'IC'+incidente.nit_empre.trim()+incidente.ticket;
-					 const regchatult = {
-						tipo: 'I',
-						id: idchat,
-						fecha: now,
-						cliente: true,
-						usuario: this.usuarFb.nombre,
-						texto: texto,
-						ticket: incidente.ticket,
-						nit_empre: incidente.nit_empre,
-						nom_empre: NetsolinApp.oapp.nom_empresa,
-						leido: false
-					}					
-					console.log('save chat en result fb ', regchatult);
-					 this.fbDb.collection(`/chat`)
-					 .doc(idchatult).set(regchatult);
-			}
-
-			public getChatnoleidosFB(ptipo,pticket,pnit_empre){
-				return this.fbDb
-				 .collection(`/chat`,ref => ref.where('nit_empre', '==', pnit_empre).where('tipo', '==', ptipo)
-					 .where("ticket","==", pticket).where("cliente","==",false))
-					.snapshotChanges()
-					.pipe(
-						map(actions =>
-							actions.map((a: any) => {
-								// console.log(a);
-								const data = a.payload.doc.data();
-								const id = a.payload.doc.id;
-								// console.log(id,data);
-								return {id}
-							})
-						)
-					 );
-			}
-	
-			public darleidoresumchatFb(pid){
-						console.log('a acutualizar item ',pid);
-						this.fbDb.doc(`chat/${pid}`).update({leido: true});
-			}
-
-
-			public getChatResumFB(pnit_empre){
-				return this.fbDb
-				.collection(`/chat`,ref => ref.where('nit_empre', '==', pnit_empre)
-					.where("leido","==", false).where("cliente","==",false))
-				 .valueChanges()
-				 .pipe(
-					map(actions =>
-						actions.map((a: any) => {
-							const fecha = a.fecha.toDate();
-							const fechastr = fecha.toLocaleDateString()
-							const horastr = fecha.toLocaleTimeString()
-							const fechachat = a.fecha.toDate();
-							return { fechachat, fechastr, horastr, ...a };
-					})
-				)
-			 );
-			}
-				
-			public getChatIncidenteFB(pticket){
-				return this.fbDb
-				.collection(`/incidentes/${pticket}/chat`)
-				 .valueChanges()
-				 .pipe(
-					map(actions =>
-						actions.map((a: any) => {
-							const fecha = a.fecha.toDate();
-							const fechastr = fecha.toLocaleDateString()
-							const horastr = fecha.toLocaleTimeString()
-							const fechachat = a.fecha.toDate();
-							// const dia = now.getDate();
-							// const mes = now.getMonth() + 1;
-							// const ano = now.getFullYear();
-							// const hora = now.getHours();
-							// const minutos = now.getMinutes();
-							// const segundos = now.getSeconds();
-							// const data = a.payload.doc.data();
-							// const id = a.payload.doc.id;
-							return { fechachat, fechastr, horastr, ...a };
-					})
-				)
-			 );
-			}
-				
-		public grabarincidenteFb(data: any, isNew?: boolean) {
+		public grabarusuarioregFb(data: any, isNew?: boolean) {
 			console.log('save fb ', data, isNew);
 			if(isNew){
-			 this.fbDb.collection(`/incidentes`)
+			 this.fbDb.collection(`/usuarioregs`)
 			 .doc(data.ticket).set(data);
 			}else{
-			 this.fbDb.collection(`/incidentes`)
+			 this.fbDb.collection(`/usuarioregs`)
 			 .doc(data.ticket).update(data);
 			}        
 	}
 
-	public regLogincidenteFb(incidente: any, cliente: boolean, accion: string, seguimiento: string, soluciona: boolean) {
-//En libreria cliente maninterno siempre en falso ya que solo se maneja en lado de Netsolin
+
+
+	public regLogusuarioregFb(usuarioreg: any,  accion: string, seguimiento: string) {
 		const now = new Date();
 		const dia = now.getDate();
 		const mes = now.getMonth() + 1;
@@ -837,22 +777,171 @@ fechacad(fechaf){
 		const reglog = {
 			id: idlog,
 			fecha: now,
-			maninterno: false,
-			regcliente: cliente,
 			accion: accion,			 
-			nombrereporta: this.oappNetsolin.nomusuar,
-			seguimiento: seguimiento,
-			soluciona: soluciona
+			nombrereporta: NetsolinApp.oapp.nomusuar,
+			seguimiento: seguimiento
 		}
 		console.log('save fb ', reglog);
-		 this.fbDb.collection(`/incidentes/${incidente.ticket}/log`)
+		 this.fbDb.collection(`/usuarios/${usuarioreg.Email}/log`)
 		 .doc(idlog).set(reglog);
 }
 
-public getLogIncidenteFB(pticket){
-	// .collection(`/clientes/${NetsolinApp.oapp.nit_empresa}/incidentes`
+
+
+public regChatusuarioregFb(usuarioreg: any, texto: string) {
+	//En libreria cliente maninterno siempre en falso ya que solo se maneja en lado de Netsolin
+			const now = new Date();
+			const dia = now.getDate();
+			const mes = now.getMonth() + 1;
+			const ano = now.getFullYear();
+			const hora = now.getHours();
+			const minutos = now.getMinutes();
+			const segundos = now.getSeconds();
+			const numaleator = Math.round(Math.random() * (1000 - 1999) + 1000);
+			const idchat = ano.toString()+ mes.toString() + dia.toString() + hora.toString() + minutos.toString()+ segundos.toString()+numaleator.toString();
+	
+			const regchat = {
+				id: idchat,
+				fecha: now,
+				cliente: false,
+				usuario: this.usuarFb.nombre,
+				texto: texto,
+				leido: false
+			}
+			// console.log('save fb ', regchat);
+			 this.fbDb.collection(`/usuarioregs/${usuarioreg.ticket}/chat`)
+			 .doc(idchat).set(regchat);
+					 //registro chat por usuarioreg ultimo para alertas
+					 const idchatult = 'IN'+usuarioreg.nit_empre.trim()+usuarioreg.ticket;
+					 const regchatult = {
+						tipo: 'I',
+						id: idchat,
+						fecha: now,
+						cliente: false,
+						usuario: this.usuarFb.nombre,
+						texto: texto,
+						ticket: usuarioreg.ticket,
+						nit_empre: usuarioreg.nit_empre,
+						leido: false
+					}					
+					console.log('save chat en result fb ', regchatult);
+					 this.fbDb.collection(`/chat`)
+					 .doc(idchatult).set(regchatult);
+	}
+	public getChatnoleidosFB(ptipo,pticket,pnit_empre){
+		return this.fbDb
+		 .collection(`/chat`,ref => ref.where('nit_empre', '==', pnit_empre).where('tipo', '==', ptipo)
+			 .where("ticket","==", pticket).where("cliente","==",true))
+			.snapshotChanges()
+			.pipe(
+				map(actions =>
+					actions.map((a: any) => {
+						// console.log(a);
+						const data = a.payload.doc.data();
+						const id = a.payload.doc.id;
+						// console.log(id,data);
+						return {id}
+					})
+				)
+			 );
+	}
+	public darleidoresumchatFb(pid){
+		console.log('a acutualizar item ',pid);
+		this.fbDb.doc(`chat/${pid}`).update({leido: true});
+}
+
+	// public darleidoresumchat(ptipo,pticket,pnit_empre){
+	// 	const idchatult = ptipo+pnit_empre.trim()+pticket;
+	// 	// console.log('darleidoresumchat',idchatult);
+	// 	this.getChatnoleidosFB(ptipo,pticket,pnit_empre)
+	// 		 .subscribe((items: any) =>{
+	// 			//  console.log('items',items);
+	// 						items.forEach(job=>{
+	// 							console.log('a acutualizar item ',job,job.id);
+	// 								this.fbDb.doc(`chat/${job.id}`).update({leido: true});
+	// 						})
+	// 				});					
+	// }
+	public getChatResumFB(){
+		return this.fbDb
+		.collection(`/chat`,ref => ref
+			.where("leido","==", false).where("cliente","==",true))
+		 .valueChanges()
+		 .pipe(
+			map(actions =>
+				actions.map((a: any) => {
+					const fecha = a.fecha.toDate();
+					const fechastr = fecha.toLocaleDateString()
+					const horastr = fecha.toLocaleTimeString()
+					const fechachat = a.fecha.toDate();
+					return { fechachat, fechastr, horastr, ...a };
+			})
+		)
+	 );
+	}
+		
+	public regChatrequerimientoFb(requer: any, texto: string) {
+		//En libreria cliente maninterno siempre en falso ya que solo se maneja en lado de Netsolin
+				const now = new Date();
+				const dia = now.getDate();
+				const mes = now.getMonth() + 1;
+				const ano = now.getFullYear();
+				const hora = now.getHours();
+				const minutos = now.getMinutes();
+				const segundos = now.getSeconds();
+				const numaleator = Math.round(Math.random() * (1000 - 1999) + 1000);
+				const idchat = ano.toString()+ mes.toString() + dia.toString() + hora.toString() + minutos.toString()+ segundos.toString()+numaleator.toString();
+		
+				const regchat = {
+					id: idchat,
+					fecha: now,
+					cliente: false,
+					usuario: this.usuarFb.nombre,
+					texto: texto,
+					leido: false
+				}
+				// console.log('save fb ', regchat);
+				 this.fbDb.collection(`/requerimientos/${requer.idrequer}/chat`)
+				 .doc(idchat).set(regchat);
+					 //registro chat por requerimiento ultimo para alertas
+					 const idchatult = 'RN'+requer.nit_empre.trim()+requer.idrequer;
+					 const regchatult = {
+						tipo: 'R',
+						id: idchat,
+						fecha: now,
+						cliente: false,
+						usuario: this.usuarFb.nombre,
+						texto: texto,
+						ticket: requer.idrequer,
+						nit_empre: requer.nit_empre,
+						leido: false
+					}					
+					console.log('save chat en result fb req ', regchatult);
+					 this.fbDb.collection(`/chat`)
+					 .doc(idchatult).set(regchatult);
+		}
+	
+public actLogusuarioregFb(idlog, maninterno: boolean, usuarioreg: any, cliente: boolean, accion: string, seguimiento: string, soluciona: boolean) {
+
+	const reglog = {
+		id: idlog,
+		regcliente: cliente,
+		maninterno: maninterno,
+		accion: accion,			 
+		nombrereporta: this.usuarFb.nombre,
+		seguimiento: seguimiento,
+		soluciona: soluciona
+	}
+	console.log('save fb ', reglog);
+	 this.fbDb.collection(`/usuarioregs/${usuarioreg.ticket}/log`)
+	 .doc(idlog).update(reglog);
+}
+
+
+public getLogUsuarioregFB(pticket){
+	// .collection(`/clientes/${NetsolinApp.oapp.nit_empresa}/usuarioregs`
 	return this.fbDb
-	.collection(`/incidentes/${pticket}/log`,ref => ref.where('maninterno', '==', false))
+	.collection(`/usuarioregs/${pticket}/log`)
 	 .valueChanges()
  	.pipe(
 		map(actions =>
@@ -860,6 +949,7 @@ public getLogIncidenteFB(pticket){
 				const fecha = a.fecha.toDate();
 				const fechastr = fecha.toLocaleDateString()
 				const horastr = fecha.toLocaleTimeString()
+				const fechalog = a.fecha.toDate();
 				// const dia = now.getDate();
 				// const mes = now.getMonth() + 1;
 				// const ano = now.getFullYear();
@@ -868,121 +958,37 @@ public getLogIncidenteFB(pticket){
 				// const segundos = now.getSeconds();
 				// const data = a.payload.doc.data();
 				// const id = a.payload.doc.id;
-				return { fechastr, horastr, ...a };
+				return { fechalog, fechastr, horastr, ...a };
 		})
 	)
  );
 }
-
-
-public getRequerimientosPendientesFB(){
+public getChatUsuarioregFB(pticket){
 	return this.fbDb
-	.collection(`/requerimientos`
-	,ref => ref.where('nit_empre', '==', NetsolinApp.oapp.nit_empresa).where('entregado', '==', false))
- .valueChanges()
- .pipe(
-	map(actions =>
-		actions.map((a: any) => {
-			// console.log(a);
-			a.fecha = a.fecha.toDate();
-			a.fechaevalua = a.fechaevalua.toDate();
-			a.fechaasignado = a.fechaasignado.toDate();				
-			a.fechaentregado = a.fechaentregado.toDate();
-			return a;
-
-		})
-	)
- );
-}
-public getrequerimientosCerradosFB(){
-	return this.fbDb
-	.collection(`/requerimientos`
-	,ref => ref.where('nit_empre', '==', NetsolinApp.oapp.nit_empresa).where('entregado', '==', true)
-	.limit(100))
- .valueChanges()
- .pipe(
-	map(actions =>
-		actions.map((a: any) => {
-			// console.log(a);
-			a.fecha = a.fecha.toDate();
-			a.fechaevalua = a.fechaevalua.toDate();
-			a.fechaentregado = a.fechaentregado.toDate();
-			return a;
-
+	.collection(`/usuarioregs/${pticket}/chat`)
+	 .valueChanges()
+ 	.pipe(
+		map(actions =>
+			actions.map((a: any) => {
+				const fecha = a.fecha.toDate();
+				const fechastr = fecha.toLocaleDateString()
+				const horastr = fecha.toLocaleTimeString()
+				const fechachat = a.fecha.toDate();
+				// const dia = now.getDate();
+				// const mes = now.getMonth() + 1;
+				// const ano = now.getFullYear();
+				// const hora = now.getHours();
+				// const minutos = now.getMinutes();
+				// const segundos = now.getSeconds();
+				// const data = a.payload.doc.data();
+				// const id = a.payload.doc.id;
+				return { fechachat, fechastr, horastr, ...a };
 		})
 	)
  );
 }
 
-public addRequerimientoFb(idt, objrequer){
-	console.log('addRequerimientoFb ', idt, objrequer);
-	this.fbDb.collection(`/requerimientos`)
-	.doc(idt).set(objrequer);
-}
-public actRequerimientoFb(idt, objrequer){
-	this.fbDb.collection(`/requerimientos`)
-	.doc(idt).update(objrequer);
-}		
-public deleteRequerimientoFb(idt){
-	this.fbDb.collection(`/requerimientos`)
-	.doc(idt).delete();
-}	
 
-public grabarRequerimientoteFb(data: any, isNew?: boolean) {
-	console.log('save fb ', data, isNew);
-	if(isNew){
-	 this.fbDb.collection(`/requerimientos`)
-	 .doc(data.ticket).set(data);
-	}else{
-	 this.fbDb.collection(`/requerimientos`)
-	 .doc(data.ticket).update(data);
-	}        
-}
-public regLogRequerimientoFb(maninterno: boolean, requerimiento: any, cliente: boolean, etapa: string, accion: string, seguimiento: string, terminaetapa, entregado: boolean) {
-	const now = new Date();
-	const dia = now.getDate();
-	const mes = now.getMonth() + 1;
-	const ano = now.getFullYear();
-	const hora = now.getHours();
-	const minutos = now.getMinutes();
-	const segundos = now.getSeconds();
-	const numaleator = Math.round(Math.random() * (1000 - 1999) + 1000);
-	const idlog = ano.toString()+ mes.toString() + dia.toString() + hora.toString() + minutos.toString()+ segundos.toString()+numaleator.toString();
-
-	const reglog = {
-		id: idlog,
-		fecha: now,
-		regcliente: cliente,
-		maninterno: maninterno,
-		etapa: etapa,			 
-		terminaetapa: terminaetapa,
-		accion: accion,
-		nombrereporta: this.usuarFb.nombre,
-		seguimiento: seguimiento,
-		entregado: entregado
-	}
-	console.log('save fb ', reglog);
-	 this.fbDb.collection(`/requerimientos/${requerimiento.idrequer}/log`)
-	 .doc(idlog).set(reglog);
-}
-public actLogrequerimientoFb(idlog, maninterno: boolean, requer: any, cliente: boolean, accion: string, seguimiento: string, etapa:string, terminaetapa, entregado: boolean) {
-	const reglog = {
-		regcliente: cliente,
-		maninterno: maninterno,
-		etapa: etapa,	 
-		accion: accion,		
-		terminaetapa: terminaetapa,
-		nombrereporta: this.usuarFb.nombre,
-		seguimiento: seguimiento
-	}
-	console.log('save fb ', reglog);
-	 this.fbDb.collection(`/requerimientos/${requer.idrequer}/log`)
-	 .doc(idlog).update(reglog);
-}
-public deleteLogRequerimientoFb(pidreq,idt){
-	this.fbDb.collection(`/requerimientos/${pidreq}/log`)
-	.doc(idt).delete();
-}		
 public getLogRequerimientoFB(pid){
 	return this.fbDb
 	.collection(`/requerimientos/${pid}/log`)
@@ -999,7 +1005,6 @@ public getLogRequerimientoFB(pid){
 	)
  );
 }
-
 public getChatRequerimientoFB(pid){
 	return this.fbDb
 	.collection(`/requerimientos/${pid}/chat`)
@@ -1016,95 +1021,5 @@ public getChatRequerimientoFB(pid){
 	)
  );
 }
-
-public addArchivoRequerimientoFb(pid,idt, nombre, nomarch, imageURL): Promise<any> {
-	console.log('addArchivoRequerimientoFb', pid,idt, nombre, nomarch, imageURL);
-	const now = new Date();
-	const dia = now.getDate();
-	const mes = now.getMonth() + 1;
-	const ano = now.getFullYear();
-	const hora = now.getHours();
-	const minutos = now.getMinutes();
-	const segundos = now.getSeconds();
-	const idimg = ano.toString()+ mes.toString() + dia.toString() + hora.toString() + minutos.toString()+ segundos.toString();
-
-	const storageRef: AngularFireStorageReference = this.afStorage.ref(`/requerimientos/${pid}/archivos/${nomarch}/`);
-	return storageRef
-		.put(imageURL)
-		.then(() => {
-				console.log('a grabar registro en firebase ');          
-			return storageRef.getDownloadURL().subscribe((linkref: any) => {
-					console.log(linkref);
-					const objarch = {
-						id: idt,
-						nombre: nombre,
-						nomarch: nomarch,
-						fecha: new Date(),
-						usuarcrea: this.usuarFb.nombre,
-						linkarch: linkref
-					}
-					this.fbDb.collection(`/requerimientos/${pid}/archivos`)
-					.doc(idt).set(objarch);				
-			}); 
-	});
-}
-public actArchivoRequerimientoFb(pid,idt, objarch){
-	this.fbDb.collection(`/requerimientos/${pid}/archivos`)
-	.doc(idt).update(objarch);
-}			
-public deleteArchivoRequerimientoFb(pid,idt){
-	this.fbDb.collection(`/requerimientos/${pid}/archivos`)
-	.doc(idt).delete();
-}				
-public regChatrequerimientoFb(requer: any, texto: string) {
-	//En libreria cliente maninterno siempre en falso ya que solo se maneja en lado de Netsolin
-			const now = new Date();
-			const dia = now.getDate();
-			const mes = now.getMonth() + 1;
-			const ano = now.getFullYear();
-			const hora = now.getHours();
-			const minutos = now.getMinutes();
-			const segundos = now.getSeconds();
-			const numaleator = Math.round(Math.random() * (1000 - 1999) + 1000);
-			const idchat = ano.toString()+ mes.toString() + dia.toString() + hora.toString() + minutos.toString()+ segundos.toString()+numaleator.toString();
-	
-			const regchat = {
-				id: idchat,
-				fecha: now,
-				cliente: true,
-				usuario: this.usuarFb.nombre,
-				texto: texto,
-				leido: false
-			}
-			// console.log('save fb ', regchat);
-			 this.fbDb.collection(`/requerimientos/${requer.idrequer}/chat`)
-			 .doc(idchat).set(regchat);
-					 //registro chat por requerimiento ultimo para alertas
-					 const idchatult = 'RC'+requer.nit_empre.trim()+requer.idrequer;
-					 const regchatult = {
-						tipo: 'R',
-						id: idchat,
-						fecha: now,
-						cliente: true,
-						usuario: this.usuarFb.nombre,
-						texto: texto,
-						ticket: requer.idrequer,
-						nit_empre: requer.nit_empre,
-						nom_empre: NetsolinApp.oapp.nom_empresa,
-						leido: false
-					}					
-					console.log('save chat en result fb req ', regchatult);
-					 this.fbDb.collection(`/chat`)
-					 .doc(idchatult).set(regchatult);
-
-	}
-	      //Se suscribe a modulos
-				public getModulosFB() {
-					console.log('en getModulosFB');
-				return this.fbDb
-					.collection(`/parametros/tablas/modulos`)
-				 .valueChanges();
-				}			
-				//S
 	}
 

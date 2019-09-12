@@ -7,7 +7,7 @@ import {
   HttpHeaders,
   HttpErrorResponse
 } from "@angular/common/http";
-import { Observable } from "rxjs";
+import { Observable } from "rxjs/Observable";
 import { catchError, map, tap } from "rxjs/operators";
 import { NetsolinApp } from '../shared/global';
 

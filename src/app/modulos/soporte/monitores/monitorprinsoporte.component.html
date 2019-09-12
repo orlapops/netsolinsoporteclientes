@@ -21,17 +21,9 @@
 <!-- aqui ventanas modal para la adicion de otras tablas desde este modulo -->
 <!-- <mant-cliepoten ptitulo="Consultar Cliente potencial." *ngIf="consultacliepoten" (evenclose)="closeconsulta('cliepoten')" pvaparam="VPARCLIENPOTEN" pobjeto="CRMCLIENTECP01" ptipomant="C" [pid]="id_cliepoten"></mant-cliepoten> -->
 <div *ngIf="resultados" class="row">
-    <div *ngIf="puedecrearincidente" class="row netsmonifilmentop">
-        <div class="col-md-12 col-xs-12 col-sm-6 col-lg-6 netsmonibotonmentop">
-            <p class="k-block">
-                <button class="netsmonibotonmentop" kendoButton *ngIf="cargousuario" [routerLink]="[retornaRutacotiza()]" [look]="'flat'" [icon]="'plus'" [primary]="true">Crear Cotización</button>
-            </p>
-        </div>
-    </div>
-
     <div class="row">
         <div class="col-md-12 col-xs-12 col-sm-6 col-lg-6 netsmonibotonmentop">
-            <strong>Monitor Principal {{service.usuarFb.id}} {{service.usuarFb.nombre}} 
+            <strong>Monitor Registros Usuarios Catalogo clientes 
 
             </strong>
             <strong *ngIf="service.cargo_usuar">
@@ -82,104 +74,67 @@
                                                         filterNotEqOperator="No es igual a" filterStartsWithOperator="comienza con" groupPanelEmpty="Gupo Vacío" NoRecords="sin registros" pagerFirstPage="Primera página" pagerLastPage="Ultima" pagerNextPage="Siguiente"
                                                         pagerPreviousPage="Anterior" pagerPage="Página" pagerOf="de" pagerItems="ítems" pagerItemsPerPage="ítems por página">
                                                     </kendo-grid-messages>
-                                                    <ng-template kendoGridToolbarTemplate>
-                                                        <button kendoGridAddCommand>Adicionar Nuevo</button>
-                                                    </ng-template>
                                                     <div>
-                                                        <kendo-grid-column field="ticket" width="110" title="Ticket" [sortable]="true">
+                                                        <kendo-grid-column field="id_empresa" width="110" title="Nit" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
                                                                 <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                <span class="clickmonitor">
-                                                                    <a (click)="monitorClick(dataItem)" title="Click para ir al caso. Evaluar, Seguir"> {{ dataItem.ticket }}</a>
-                                                                    </span>
+                                                                    {{ dataItem.id_empresa }}
                                                             </ng-template>
                                                         </kendo-grid-column>
-                                                        <kendo-grid-column field="asunto" title="Asunto" width="200" [sortable]="true">
-                                                            <ng-template kendoGridCellTemplate let-dataItem>
-                                                                {{ dataItem.asunto }}
-                                                            </ng-template>
-                                                        </kendo-grid-column>
-
-                                                        <kendo-grid-column field="nomusuarreporta" title="Usuario" width="160" [sortable]="true">
+                                                        <kendo-grid-column field="Empresa" title="Empresa" width="160" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
                                                                 <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                <a (click)="monitorClick(dataItem)">{{ dataItem.nomusuarreporta}}</a>
-
+                                                                {{ dataItem.Empresa}}
                                                             </ng-template>
                                                         </kendo-grid-column>
-                                                        <kendo-grid-column field="fecha" width="120" title="Fecha" format="{0:g}">
-                                                            <ng-template kendoGridFilterMenuTemplate let-filter let-column="column" let-filterService="filterService">
-                                                                <date-range-filter [field]="column.field" [filter]="filter" [filterService]="filterService">
-                                                                </date-range-filter>
-                                                            </ng-template>
-                                                        </kendo-grid-column>
-
-                                                        <!-- <kendo-grid-column field="fecha" title="Fecha" [sortable]="true">
+                                                        <kendo-grid-column field="ID" width="110" title="Id" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
                                                                 <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                {{ dataItem.fecha.toDate() | date: 'mediumDate' }}
+                                                                     {{ dataItem.ID }}
                                                             </ng-template>
-                                                        </kendo-grid-column> -->
-                                                        <kendo-grid-column field="prioridad" title="Prioridad" width="80" [sortable]="true">
+                                                        </kendo-grid-column>
+
+                                                        <kendo-grid-column field="Nombre" title="Usuario" width="160" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
                                                                 <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                {{ dataItem.prioridad }}
-                                                            </ng-template>
-                                                        </kendo-grid-column>
-                                                        <kendo-grid-column field="evaluado" width="60" title="Evaluado" filter="boolean">
-                                                            <ng-template kendoGridCellTemplate let-dataItem>
-                                                                <input type="checkbox" [checked]="dataItem.evaluado" disabled/>
-                                                            </ng-template>
-                                                        </kendo-grid-column>
+                                                                {{ dataItem.Nombre}}
 
-                                                        <!-- <kendo-grid-column field="evaluado" title="Evaluado" [sortable]="true">
+                                                            </ng-template>
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="Email" title="Email" width="160" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
                                                                 <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
-
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                {{ dataItem.evaluado }}
-                                                            </ng-template>
-                                                        </kendo-grid-column> -->
-                                                        <kendo-grid-column field="reportadoanetsolin" width="80" title="Reportado" filter="boolean">
-                                                            <ng-template kendoGridCellTemplate let-dataItem>
-                                                                <!-- <span class="whole-cell" [style.backgroundColor]="colorCode(dataItem.reportadoanetsolin)"> -->
-                                                                <!-- {{ dataItem.code }} -->
-                                                                <input type="checkbox" [checked]="dataItem.reportadoanetsolin" disabled/>
-                                                                <!-- </span> -->
+                                                               {{ dataItem.Email}}
                                                             </ng-template>
                                                         </kendo-grid-column>
 
-                                                        <!-- <kendo-grid-column field="solucionado" width="160" filter="boolean">
+                                                        <kendo-grid-column field="Vista" width="60" title="Autorizado" filter="boolean">
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                <input type="checkbox" [checked]="dataItem.solucionado" disabled/>
+                                                                <input type="checkbox" [checked]="dataItem.Vista" disabled/>
                                                             </ng-template>
-                                                        </kendo-grid-column> -->
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="Pedido" width="60" title="Pedidos" filter="boolean">
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                <input type="checkbox" [checked]="dataItem.Pedido" disabled/>
+                                                            </ng-template>
+                                                        </kendo-grid-column>
                                                     </div>
                                                     <kendo-grid-command-column title="opción" width="120">
                                                         <ng-template kendoGridCellTemplate>
-                                                            <!-- <button (click)="monitorClick(dataItem)" kendoGridEditCommand [primary]="true">Editar</button> -->
                                                             <button kendoGridEditCommand [primary]="true">Editar</button>
-                                                            <!-- <button *ngIf="!dataItem.solucionado && !dataItem.evaluado" kendoGridRemoveCommand>Eliminar</button> -->
-                                                            <button kendoGridRemoveCommand>Eliminar</button>
+                                                            <!-- <button kendoGridRemoveCommand>Eliminar</button> -->
                                                         </ng-template>
                                                     </kendo-grid-command-column>
-
-                                                    <!-- <kendo-grid-command-column title="Opciones" width="120">
-                                                        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                                                            <i (click)="monitorClick(dataItem)" class="fa fa-bar-chart fa-lg mantenimiento" data-toggle="tooltip" title="Click para ir al monitor."></i>
-                                                            <i (click)="verRegK(dataItem)" class="fa fa-eye fa-lg manteconsulta" data-toggle="tooltip" title="Click para consultar el registro."></i>
-
-                                                        </ng-template>
-                                                    </kendo-grid-command-column> -->
                                                 </kendo-grid>
                                                 <kendo-grid-edit-form [model]="editDataItem" [isNew]="isNew" (save)="saveHandler($event)" (cancel)="cancelHandler()">
                                                 </kendo-grid-edit-form>
@@ -191,7 +146,7 @@
                         </div>
                     </ng-template>
                 </kendo-tabstrip-tab>
-                <kendo-tabstrip-tab [title]="'Cerrados'" [selected]="false">
+                <kendo-tabstrip-tab [title]="'Autorizados'" [selected]="false">
                     <ng-template kendoTabContent>
                         <div class="row">
                             <div class="col-md-12">
@@ -203,10 +158,10 @@
                                         </div>
                                         <div class="box-body">
                                             <div>
-                                                <kendo-grid [data]="gridDatacerrados" [height]="700" [pageSize]="statecerrados.take" [skip]="statecerrados.skip" [sortable]="true" [sortable]="{
+                                                <kendo-grid [data]="gridDataactivos" [height]="700" [pageSize]="statecerrados.take" [skip]="statecerrados.skip" [sortable]="true" [sortable]="{
                                                         allowUnsort: allowUnsort,
                                                         mode: multiple ? 'multiple' : 'single'
-                                                        }" [sort]="sortcerrados" (sortChange)="sortChangecerrados($event)" [pageable]="true" [filter]="filtercerrados" filterable="menu" (filterChange)="filterChangecerrados($event)" (dataStateChange)="dataStateChangecerrados($event)">
+                                                        }" [sort]="sortcerrados" (sortChange)="sortChangecerrados($event)" [pageable]="true" [filter]="filtercerrados" filterable="menu" (filterChange)="filterChangecerrados($event)" (dataStateChange)="dataStateChangecerrados($event)"  (edit)="editHandler($event)">
                                                     <kendo-grid-messages groupPanelEmpty="Drag here to group" noRecords="No se encontraron items para mostrar." filterContainsOperator="Contiene" filterEndsWithOperator="Termina con" filterAfterOperator="es posterior" filterAfterOrEqualOperator="es posterior o igual a"
                                                         filterBeforeOperator="es anterior" filterBeforeOrEqualOperator="es anterior o igual a" filterBooleanAll="Todo" filterClearButton="Limpiar" filterEndsWithOperator="Termina con" filterEqOperator="Es igual a"
                                                         filterFilterButton="Filtro" filterGtOperator="es mayor que" filterGteOperator="es mayor o igual que" filterIsEmptyOperator="Está vacío" filterIsFalse="Falso" filterIsNotEmptyOperator="no está vacío"
@@ -215,66 +170,69 @@
                                                         pagerPreviousPage="Anterior" pagerPage="Página" pagerOf="de" pagerItems="ítems" pagerItemsPerPage="ítems por página">
                                                     </kendo-grid-messages>
                                                     <div>
-                                                        <kendo-grid-column field="ticket" width="110" title="Ticket" [sortable]="true">
+                                                        <kendo-grid-column field="id_empresa" width="110" title="Nit" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
-                                                                <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitiveCerrrados(column.field)"></multicheck-filter>
+                                                                <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                <span class="clickmonitor">
-                                                                        <a (click)="monitorClick(dataItem)" title="Click para ir al caso. Evaluar, Seguir"> {{ dataItem.ticket }}</a>
-                                                                        </span>
+                                                                    {{ dataItem.id_empresa }}
                                                             </ng-template>
                                                         </kendo-grid-column>
-                                                        <kendo-grid-column field="asunto" title="Asunto" width="200" [sortable]="true">
-                                                            <ng-template kendoGridCellTemplate let-dataItem>
-                                                                {{ dataItem.asunto }}
-                                                            </ng-template>
-                                                        </kendo-grid-column>
-
-                                                        <!-- <kendo-grid-column field="nom_empre" title="Empresa" width="160" [sortable]="true">
+                                                        <kendo-grid-column field="Empresa" title="Empresa" width="160" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
-                                                                <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitiveCerrrados(column.field)"></multicheck-filter>
+                                                                <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                <a (click)="monitorClick(dataItem)">{{ dataItem.nom_empre}}</a>
-
+                                                                {{ dataItem.Empresa}}
                                                             </ng-template>
-                                                        </kendo-grid-column> -->
-
-                                                        <kendo-grid-column field="nomusuarreporta" title="Usuario" width="160" [sortable]="true">
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="ID" width="110" title="Id" [sortable]="true">
                                                             <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
-                                                                <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitiveCerrrados(column.field)"></multicheck-filter>
+                                                                <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                <a (click)="monitorClick(dataItem)">{{ dataItem.nomusuarreporta}}</a>
-
-                                                            </ng-template>
-                                                        </kendo-grid-column>
-                                                        <kendo-grid-column field="fecha" width="120" title="Fecha" format="{0:g}">
-                                                            <ng-template kendoGridFilterMenuTemplate let-filter let-column="column" let-filterService="filterService">
-                                                                <date-range-filter [field]="column.field" [filter]="filter" [filterService]="filterService">
-                                                                </date-range-filter>
+                                                                     {{ dataItem.ID }}
                                                             </ng-template>
                                                         </kendo-grid-column>
 
-                                                        <kendo-grid-column field="fechasolucionado" width="120" title="Cerrado" format="{0:g}">
-                                                            <ng-template kendoGridFilterMenuTemplate let-filter let-column="column" let-filterService="filterService">
-                                                                <date-range-filter [field]="column.field" [filter]="filter" [filterService]="filterService">
-                                                                </date-range-filter>
+                                                        <kendo-grid-column field="Nombre" title="Usuario" width="160" [sortable]="true">
+                                                            <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
+                                                                <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
+                                                            </ng-template>
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                {{ dataItem.Nombre}}
+
                                                             </ng-template>
                                                         </kendo-grid-column>
-                                                        <!-- <kendo-grid-column field="tiemporepotacerrado" title="Tiempo" width="80" [sortable]="true">
-                                                            <ng-template kendoGridCellTemplate let-dataItem>
-                                                                {{ dataItem.tiemporepotacerrado | number: '2.2-2'}}
+                                                        <kendo-grid-column field="Email" title="Email" width="160" [sortable]="true">
+                                                            <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
+                                                                <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
                                                             </ng-template>
-                                                        </kendo-grid-column> -->
-                                                        <kendo-grid-column field="consasignado" title="Consultor" width="200" [sortable]="true">
                                                             <ng-template kendoGridCellTemplate let-dataItem>
-                                                                {{ dataItem.consasignado }}
+                                                               {{ dataItem.Email}}
+                                                            </ng-template>
+                                                        </kendo-grid-column>
+
+                                                        <kendo-grid-column field="Vista" width="60" title="Autorizado" filter="boolean">
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                <input type="checkbox" [checked]="dataItem.Vista" disabled/>
+                                                            </ng-template>
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="Pedido" width="60" title="Pedidos" filter="boolean">
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                <input type="checkbox" [checked]="dataItem.Pedido" disabled/>
                                                             </ng-template>
                                                         </kendo-grid-column>
                                                     </div>
+                                                    <kendo-grid-command-column title="opción" width="120">
+                                                        <ng-template kendoGridCellTemplate>
+                                                            <button kendoGridEditCommand [primary]="true">Editar</button>
+                                                            <!-- <button kendoGridRemoveCommand>Eliminar</button> -->
+                                                        </ng-template>
+                                                    </kendo-grid-command-column>
                                                 </kendo-grid>
+                                                <kendo-grid-edit-form [model]="editDataItem" [isNew]="isNew" (save)="saveHandler($event)" (cancel)="cancelHandler()">
+                                                </kendo-grid-edit-form>
                                             </div>
                                         </div>
                                     </div>
@@ -283,6 +241,7 @@
                         </div>
                     </ng-template>
                 </kendo-tabstrip-tab>
+
 
             </kendo-tabstrip>
         </kendo-splitter-pane>

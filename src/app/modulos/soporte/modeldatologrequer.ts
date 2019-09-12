@@ -9,4 +9,4 @@ export class Logrequer {
     public terminaetapa = false;
     public nombreporta = '';    
     public seguimiento = '';
-} 
+}

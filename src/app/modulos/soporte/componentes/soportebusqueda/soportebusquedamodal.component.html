@@ -25,6 +25,8 @@
                         </div>
                         <div class="row">
                             <div *ngIf="mostrarlistacliepoten" class="col-md-12">
+                                <lista-busqueda ptablab="CLIENPOTEN" paplica="21" porden="2" [filtro]="filtrocliepoten" lobjbusqueda="BUSMONICLIEPOTENCRM" title="Cliente potencial" objeto="CRMCLIENTECP01" rutamant="mantbasica/CRMCLIENTECP01/">
+                                </lista-busqueda>
                             </div>
                         </div>
                     </ng-template>
@@ -38,8 +40,8 @@
                         </div>
                         <div class="row">
                             <div *ngIf="mostrarlistavendedor" class="col-md-12">
-                                <!-- <lista-busqueda ptablab="VENDEDORES" paplica="0" porden="2" [filtro]="filtrovendedor" lobjbusqueda="BUSMONIPERSRUTA" title="Vendedores" objeto="CRMVENDEDOR" rutamant="mantbasica/CRMVENDEDOR/">
-                                </lista-busqueda> -->
+                                <lista-busqueda ptablab="VENDEDORES" paplica="0" porden="2" [filtro]="filtrovendedor" lobjbusqueda="BUSMONIPERSRUTA" title="Vendedores" objeto="CRMVENDEDOR" rutamant="mantbasica/CRMVENDEDOR/">
+                                </lista-busqueda>
                             </div>
                         </div>
                     </ng-template>

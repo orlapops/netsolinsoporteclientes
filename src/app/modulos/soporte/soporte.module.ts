@@ -7,7 +7,7 @@ import localeEs from '@angular/common/locales/es';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { CRM_ROUTES } from './soporte.routes';
+import { SOPOR_ROUTES } from './soporte.routes';
 
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -31,15 +31,11 @@ import { environment } from '../../../environments/environment';
 import { SoporteComponent } from './soporte.component';
 
 import { MonitorPrinSoporteComponent } from './monitores/monitorprinsoporte.component';
-import { MonitorPrinRequerimientoComponent } from './monitores/monitorprinrequerimiento.component';
 import { NetsolinLibreriasModule } from '../../netsolinlibrerias/netsolin.librerias.module';
 import { NetsolinMantablasModule } from '../../mantablasbasicas/netsolin.mantablas.module';
 import { Netssoportebusqueda } from './componentes/soportebusqueda/soportebusquedamodal.componet';
-import { MonitorIncidenciaComponent } from './monitores/incidencia/monitor.component';
-import { MonitorRequerimientoComponent } from './monitores/requerimiento/monitor.component';
 import { MonitorGeneralComponent } from './monitores/general/monitor.component';
 import { MonitorObjetotablaComponent } from './monitores/objetotabla/monitor.component';
-import { MonitorPrinCasosfreComponent } from './monitores/monitorprincasosfrecue.component';
 
 //Kendo
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
@@ -62,7 +58,6 @@ import '@progress/kendo-angular-intl/locales/es/all';
 import { AppmenuSoporteComponent } from './componentes/appmenuizq/appmenu.component';
 import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
 import { EditorModule } from '@progress/kendo-angular-editor';
-
 // Load all required data for the ES locale
 // import '@progress/kendo-angular-intl/locales/es/all';
 
@@ -72,42 +67,23 @@ import { MultiCheckFilterComponent } from '../../netsolinlibrerias/filtromultipl
 import { DateRangeFilterComponent } from '../../netsolinlibrerias/filtromultiplegrid/date-range-filter.component';
 import { EditService } from '../../services/Editsoporte.service';
 import { GridEditFormComponent } from './edit-form.Soporte.component';
-import { GridEditFormarchComponent } from './monitores/incidencia/edit-formarch.Soporte.component';
-import { GridEditFormRequerComponent } from './edit-form.requer.component';
-import { GridEditFormarchrequerComponent } from './monitores/requerimiento/edit-formarch.requer.component';
-import { GridEditnovedadrequerFormComponent } from './monitores/requerimiento/edit-form.Novedadrequer.component';
-// import { UploadComponent } from './upload.component';
-// import { UploadInterceptor } from './monitores/incidencia/edit-formarch.Soporte.component';
-
-// import { GridEditFormarchComponent } from './edit-formarch.Soporte.component';
+// import { GridEditFormarchComponent } from './monitores/incidencia/edit-formarch.Soporte.component';
 registerLocaleData(localeEs, 'es')
 @NgModule({
     declarations: [
         SoporteComponent,
         Netssoportebusqueda,
         MonitorPrinSoporteComponent,
-        MonitorPrinRequerimientoComponent,
-        MonitorPrinCasosfreComponent,
-        MonitorIncidenciaComponent,
-        MonitorRequerimientoComponent,
         MonitorGeneralComponent,
         MonitorObjetotablaComponent,
         AppmenuSoporteComponent,
         MultiCheckFilterComponent,
         DateRangeFilterComponent,
         GridEditFormComponent,
-        GridEditFormarchrequerComponent,
-        GridEditFormRequerComponent,
-        GridEditFormarchComponent,
-        GridEditnovedadrequerFormComponent
     ],
     exports: [
         MonitorPrinSoporteComponent,
-        MonitorPrinRequerimientoComponent,
-        MonitorPrinCasosfreComponent,
         Netssoportebusqueda,
-        MonitorIncidenciaComponent,
-        MonitorRequerimientoComponent,
         MonitorGeneralComponent,
         MonitorObjetotablaComponent,
         AppmenuSoporteComponent,
@@ -116,9 +92,8 @@ registerLocaleData(localeEs, 'es')
     imports: [
         CommonModule,
         SharedModule,
-        // TiendaModule,
         NetsolinLibreriasModule,
-        CRM_ROUTES,
+        SOPOR_ROUTES,
         FormsModule,
         ReactiveFormsModule,
         NetsolinMantablasModule,
@@ -145,10 +120,7 @@ registerLocaleData(localeEs, 'es')
         ChartsModule,
         DateInputsModule,
         EditorModule,
-        AgmCoreModule.forRoot({
-            apiKey: 'AIzaSyD9BxeSvt3u--Oj-_GD-qG2nPr1uODrR0Y'
-            // apiKey: 'AIzaSyBCxuyq-qQPZFoWSc7UYY1uCznmZnjfqGI'
-        }),
+        
         // AngularFirestoreModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFirestoreModule, // imports firebase/firestore, only needed for database features        
@@ -157,11 +129,11 @@ registerLocaleData(localeEs, 'es')
     providers: [
         AngularFirestore,
         { provide: LOCALE_ID, useValue: 'es' },
-        {
-            provide: HTTP_INTERCEPTORS,
-            useClass: GridEditFormarchComponent,
-            multi: true
-          },
+        // {
+        //     provide: HTTP_INTERCEPTORS,
+        //     useClass: GridEditFormarchComponent, 
+        //     multi: true
+        //   },
         EditService
     ]
 
