@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Validators, FormGroup, FormControl } from '@angular/forms';
 import { Usuarioreg } from './modeldatousuarioreg';
 import { NetsolinService } from '../../services/netsolin.service';
+import { MantablasLibreria } from '../../services/mantbasica.libreria';
 
 @Component({
     selector: 'kendo-grid-edit-form',
@@ -10,7 +11,6 @@ import { NetsolinService } from '../../services/netsolin.service';
       ],
       templateUrl: "./edit-form.Soporte.component.html",
   })
-
 export class GridEditFormComponent {
     public active = false;
     public editForm: FormGroup = new FormGroup({
@@ -20,6 +20,8 @@ export class GridEditFormComponent {
         'Email': new FormControl({value: '', disabled: true}),
         'Pedido': new FormControl(false),
         'Vista': new FormControl(false),
+        'ver_basicas': new FormControl(false),
+        'ver_stock': new FormControl(false),
         'Version': new FormControl(''),
         'Admin': new FormControl(false)
     });
@@ -35,7 +37,8 @@ export class GridEditFormComponent {
     cargoparametrosb = false;
     constructor(
         public service: NetsolinService,
-    ){
+        public libmantab: MantablasLibreria,
+        ){
         // this.cargaparametrosbasicos();
     }
     public onSave(e): void {

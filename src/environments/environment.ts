@@ -5,7 +5,7 @@
 
 export const environment = {
   production: true, 
-  firebase: {
+  firebase: { 
     //Via tropical con proyecto catalogo
     apiKey: "AIzaSyCFv63sqOWZKp3CJvFOeq8WDIHJwR26XpE",
     authDomain: "viatropicalfb.firebaseapp.com",

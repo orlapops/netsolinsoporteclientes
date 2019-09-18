@@ -32,6 +32,29 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label> Ver Basicas
+                                                        <kendo-switch formControlName="ver_basicas"
+                                                        [onLabel]="'Si'"
+                                                        [offLabel]="'No'"
+                                                        ></kendo-switch>                                                            
+                                                </label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label> Ver Stock
+                                                        <kendo-switch formControlName="ver_stock"
+                                                        [onLabel]="'Si'"
+                                                        [offLabel]="'No'"
+                                                        ></kendo-switch>                                                            
+                                                </label>
+                    </div>
+                </div>
+            </div>
+
 
             <div class="form-group">
                 <label for="id_empresa" class="control-label">Nit</label>
@@ -40,6 +63,15 @@
                     Nit Empresa es requerido
                 </div>
             </div>
+
+            <!-- <div class="form-group">
+                <label for="cod_ciudad" data-toggle="tooltip" title="Seleccione la ciudad. Para buscar escriba código o nombre seguido de *">Ciudad</label>
+            <i class="fa fa-check-circle check" *ngIf="libmantab.conpropvalCampo('cod_ciudad','valid',tablaForm)"></i>
+            <i class="fa fa-exclamation-circle uncheck" *ngIf="libmantab.conpropvalCampo('cod_ciudad','invalid',tablaForm)"></i>
+            <netscombog (pasarDatos)="verCombocod_ciudad($event,'cod_ciudad','cod_ciudad')" valini="{{libmantab.valoriniCombog('cod_ciudad',tablaForm)}}" tablabase="CIUDADES" orden="1" filtro="*" campollave="cod_ciudad" [esdisabled]="disablecod_ciudad">
+            </netscombog>
+        </div> -->
+
 
             <div class="form-group">
                 <label for="Empresa" class="control-label">Empresa</label>

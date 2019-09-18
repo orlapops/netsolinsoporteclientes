@@ -117,7 +117,16 @@
                                                                {{ dataItem.Email}}
                                                             </ng-template>
                                                         </kendo-grid-column>
-
+                                                        <kendo-grid-column field="ver_basicas" width="60" title="Basicas" filter="boolean">
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                <input type="checkbox" [checked]="dataItem.ver_basicas" disabled/>
+                                                            </ng-template>
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="ver_stock" width="60" title="Stock" filter="boolean">
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                <input type="checkbox" [checked]="dataItem.ver_stock" disabled/>
+                                                            </ng-template>
+                                                        </kendo-grid-column>
                                                         <kendo-grid-column field="Vista" width="60" title="Autorizado" filter="boolean">
                                                             <ng-template kendoGridCellTemplate let-dataItem>
                                                                 <input type="checkbox" [checked]="dataItem.Vista" disabled/>
@@ -213,6 +222,16 @@
                                                             </ng-template>
                                                         </kendo-grid-column>
 
+                                                        <kendo-grid-column field="ver_basicas" width="60" title="Basicas" filter="boolean">
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                <input type="checkbox" [checked]="dataItem.ver_basicas" disabled/>
+                                                            </ng-template>
+                                                        </kendo-grid-column>
+                                                        <kendo-grid-column field="ver_stock" width="60" title="Stock" filter="boolean">
+                                                            <ng-template kendoGridCellTemplate let-dataItem>
+                                                                <input type="checkbox" [checked]="dataItem.ver_stock" disabled/>
+                                                            </ng-template>
+                                                        </kendo-grid-column>
                                                         <kendo-grid-column field="Vista" width="60" title="Autorizado" filter="boolean">
                                                             <ng-template kendoGridCellTemplate let-dataItem>
                                                                 <input type="checkbox" [checked]="dataItem.Vista" disabled/>

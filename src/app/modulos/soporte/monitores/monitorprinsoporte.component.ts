@@ -395,6 +395,8 @@ public saveHandler(usuarioreg: Usuarioreg) {
       this.editDataItem.Vista = usuarioreg.Vista;  
       this.editDataItem.Pedido = usuarioreg.Pedido;  
       this.editDataItem.Email = this.llaveEmail;  
+      this.editDataItem.ver_basicas = usuarioreg.ver_basicas;  
+      this.editDataItem.ver_stock = usuarioreg.ver_stock;  
       this.service.actUsuarioregFb(this.llaveEmail, this.editDataItem);
       this.service.regLogusuarioregFb(this.editDataItem,'Modificado','Se modifico usuario registrado');
       console.log('editar ', this.editDataItem);

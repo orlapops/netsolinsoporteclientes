@@ -1,9 +1,9 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
-  "newProjectRoot": "projects",
+  "newProjectRoot": "projects" ,
   "projects": {
-    "soporteclie": {
+    "catalogocliente": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -11,7 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/soporteclie",
+            "outputPath": "dist/catalogocliente",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -51,18 +51,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "soporteclie:build"
+            "browserTarget": "catalogocliente:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "soporteclie:build:production"
+              "browserTarget": "catalogocliente:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "soporteclie:build"
+            "browserTarget": "catalogocliente:build"
           }
         },
         "test": {
@@ -99,7 +99,7 @@
         }
       }
     },
-    "soporteclie-e2e": {
+    "catalogocliente-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "architect": {
@@ -107,11 +107,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "soporteclie:serve"
+            "devServerTarget": "catalogocliente:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "soporteclie:serve:production"
+              "devServerTarget": "catalogocliente:serve:production"
             }
           }
         },
@@ -127,7 +127,7 @@
       }
     }
   },
-  "defaultProject": "soporteclie",
+  "defaultProject": "catalogocliente",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
