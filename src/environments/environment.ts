@@ -4,7 +4,7 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: true, 
+  production: true , 
   firebase: { 
     //Via tropical con proyecto catalogo
     apiKey: "AIzaSyCFv63sqOWZKp3CJvFOeq8WDIHJwR26XpE",
