@@ -67,12 +67,14 @@ import { MultiCheckFilterComponent } from '../../netsolinlibrerias/filtromultipl
 import { DateRangeFilterComponent } from '../../netsolinlibrerias/filtromultiplegrid/date-range-filter.component';
 import { EditService } from '../../services/Editsoporte.service';
 import { GridEditFormComponent } from './edit-form.Soporte.component';
+import { Netsprocactdatos } from './componentes/procactdatos/procactdatosmodal.componet';
 // import { GridEditFormarchComponent } from './monitores/incidencia/edit-formarch.Soporte.component';
 registerLocaleData(localeEs, 'es')
 @NgModule({
     declarations: [
         SoporteComponent,
         Netssoportebusqueda,
+        Netsprocactdatos,
         MonitorPrinSoporteComponent,
         MonitorGeneralComponent,
         MonitorObjetotablaComponent,
@@ -84,6 +86,7 @@ registerLocaleData(localeEs, 'es')
     exports: [
         MonitorPrinSoporteComponent,
         Netssoportebusqueda,
+        Netsprocactdatos,
         MonitorGeneralComponent,
         MonitorObjetotablaComponent,
         AppmenuSoporteComponent,

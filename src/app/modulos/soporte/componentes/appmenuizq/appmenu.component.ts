@@ -18,6 +18,7 @@ export class AppmenuSoporteComponent implements OnInit {
   cargomenumantbas = false;
   pmenumantbas = null;
   mostmonibusquedas = false;
+  mostproceso = false;
 
   constructor(
     private service: NetsolinService,
@@ -71,5 +72,13 @@ export class AppmenuSoporteComponent implements OnInit {
   public openbusqueda() {
     this.mostmonibusquedas = true;
   }
+  public closeproceso() {
+    this.mostproceso = false;
+  }
+
+  public openproceso() {
+    this.mostproceso = true;
+  }
+
 
 }

@@ -1,0 +1,49 @@
+<kendo-dialog title="{{ptitulo}}" (close)="close()" [minWidth]="350" [width]="650" [height]="600">
+    <div class="alert alert-danger" *ngIf="enerror">
+        {{message}}
+    </div>
+    <div *ngIf="cargando" class="text-center" style="padding-top: 60px;">
+        <!-- <img src="../../../../assets/spinner.gif"> -->
+        <img src="assets/spinner.gif">
+    </div>
+    <div class="alert alert-danger" *ngIf="enlistaerror">
+        <ul>
+            <li *ngFor="let regerror of listaerrores">
+                {{regerror.menerror}}
+            </li>
+        </ul>
+    </div>
+    <div class="row">
+        <kendo-splitter-pane min="50%">
+            <kendo-tabstrip>
+                <kendo-tabstrip-tab [title]="'Proceso actualizar Datos Firebase'" [selected]="true">
+                    <ng-template kendoTabContent>
+                        <div class="row">
+                            <div class="col-md-12">
+                                Actualiza el catalogo definido en Netsolin (Tablas base) a la nube(Firebase). El que ve el cliente en la app.<br>
+                                    <button type="submit" kendoButton (click)="actualizar_bdfirebase()" data-toggle="tooltip" title="Actualiza Imagenes" [look]="'flat'" [primary]="true">Actualizar Catalogo</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-12">
+                                    Actualiza referencias catalogo definido en Netsolin a la nube(Firebase). El que ve el cliente en la app.<br>
+                                        <button type="submit" kendoButton (click)="actualizar_referencias()" data-toggle="tooltip" title="Actualiza Imagenes" [look]="'flat'" [primary]="true">Actualizar Referencias</button>
+                                </div>
+                        </div>
+                        <div class="row">
+                             <div class="col-md-6">
+                                    Una vez actualizado datos, se deben subir las imagenes a el storage de Firebase y luego con esta opción se puden actualizar estas imagenes para que se vea correctamente la imagen en la app.<br>
+                                    <button type="submit" kendoButton (click)="actualizar_imagenlineasfirebase()" data-toggle="tooltip" title="Actualiza Imagenes" [look]="'flat'" [primary]="true">Actualizar Imagenes</button>
+                             </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-12 success">
+                                        <p class='success'>{{service.linsegproceso}}</p>
+                                </div>
+                        </div>
+                    </ng-template>
+                </kendo-tabstrip-tab>
+            </kendo-tabstrip>
+        </kendo-splitter-pane>
+    </div>
+</kendo-dialog>

@@ -33,6 +33,16 @@
             </div>
 
             <div class="row">
+                    <div class="col-md-4">
+                            <div class="form-group">
+                            <label for="Version" class="control-label">Versión Catalogo</label>
+                            <input type="text" class="k-textbox" formControlName="Version" />
+                            <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.Version.valid || editForm.controls.Version.pristine">
+                                Versión Catalogo es requerido
+                            </div>
+                        </div>
+                    </div>
+            
                 <div class="col-md-4">
                     <div class="form-group">
                         <label> Ver Basicas

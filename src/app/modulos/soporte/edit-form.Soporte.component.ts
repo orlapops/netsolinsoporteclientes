@@ -22,7 +22,7 @@ export class GridEditFormComponent {
         'Vista': new FormControl(false),
         'ver_basicas': new FormControl(false),
         'ver_stock': new FormControl(false),
-        'Version': new FormControl(''),
+        'Version': new FormControl('', Validators.required),
         'Admin': new FormControl(false)
     });
     @Input() public isNew = false;

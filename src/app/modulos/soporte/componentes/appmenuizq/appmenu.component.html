@@ -1,5 +1,8 @@
 <soporte-busqueda ptitulo="Monitor Busquedas" *ngIf="mostmonibusquedas" (evenclose)="closebusqueda()">
 </soporte-busqueda>
+<procactdatos ptitulo="Actualizar Catalogo Firebase" *ngIf="mostproceso" (evenclose)="closeproceso()">
+    </procactdatos>
+    
 <aside class="main-sidebar">
     <section class="sidebar">
         <ul class="sidebar-menu">
@@ -14,6 +17,12 @@
                     <span class="busqueda">Monitor Busquedas Soporte</span>
                 </a>
             </li> -->
+            <li>
+                <a (click)="openproceso()">
+                    <i (click)="openproceso()" class="fa fa-gear text-blue busqueda" data-toggle="tooltip" title="Click para Actualizar Datos."></i>
+                    <span class="busqueda">Actualizar Catalogo Firebase</span>
+                </a>
+            </li>
 
 
         </ul>
@@ -24,10 +33,23 @@
                 <a routerLink="/home" routerLinkActive="active">
                     <i class="fa fa-home"></i>Inicio</a>
             </li>
+            <!-- <li>
+                <a (click)="actualizar_bdfirebase()">
+                    <i class="fa fa-home"></i>Actualizar</a>
+            </li> -->
+
             <li>
                 <a href="../">ir a Netsolin
                     </a>
             </li>
+
+
+            <!-- <ion-item  *ngIf="_parEmpreProv.usuario.Admin" color="primary" tappable (click)="actualizar_bdfirebase()">
+                <ion-icon slot="start" name="log-out"></ion-icon>
+                <ion-label>
+                    Actualizar Catalogo Firebase
+                </ion-label>
+            </ion-item> -->
 
         </ul>
     </section>

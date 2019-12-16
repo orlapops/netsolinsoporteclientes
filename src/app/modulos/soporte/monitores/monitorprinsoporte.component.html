@@ -117,7 +117,15 @@
                                                                {{ dataItem.Email}}
                                                             </ng-template>
                                                         </kendo-grid-column>
-                                                        <kendo-grid-column field="ver_basicas" width="60" title="Basicas" filter="boolean">
+                                                        <kendo-grid-column field="Version" title="Versión" width="50" [sortable]="true">
+                                                                <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
+                                                                    <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
+                                                                </ng-template>
+                                                                <ng-template kendoGridCellTemplate let-dataItem>
+                                                                   {{ dataItem.Version}}
+                                                                </ng-template>
+                                                            </kendo-grid-column>
+                                                            <kendo-grid-column field="ver_basicas" width="60" title="Basicas" filter="boolean">
                                                             <ng-template kendoGridCellTemplate let-dataItem>
                                                                 <input type="checkbox" [checked]="dataItem.ver_basicas" disabled/>
                                                             </ng-template>
@@ -221,6 +229,14 @@
                                                                {{ dataItem.Email}}
                                                             </ng-template>
                                                         </kendo-grid-column>
+                                                        <kendo-grid-column field="Version" title="Versión" width="50" [sortable]="true">
+                                                                <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
+                                                                    <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
+                                                                </ng-template>
+                                                                <ng-template kendoGridCellTemplate let-dataItem>
+                                                                   {{ dataItem.Version}}
+                                                                </ng-template>
+                                                            </kendo-grid-column>
 
                                                         <kendo-grid-column field="ver_basicas" width="60" title="Basicas" filter="boolean">
                                                             <ng-template kendoGridCellTemplate let-dataItem>
