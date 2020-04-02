@@ -1,0 +1,233 @@
+<!-- Container-fluid starts-->
+<!-- <div *ngIf="oapp.datosEmpre" class="container-fluid product-wrapper" [class.sidebaron]="sidebaron"> -->
+<div  class="container-fluid product-wrapper" [class.sidebaron]="sidebaron">
+    <div class="Row" *ngIf="cargoclienteNetsolin">
+        <div  class='col-4'>
+            Cliente: {{clienteActual.cod_tercer +' / '+ clienteActual.cliente}}
+        </div>
+        <div  class='col-8'>
+          Cliente: {{'Lista de precios: ' +clienteActual.lista +' Forma de Pago: '+ clienteActual.for_pago}}
+      </div>
+
+    </div>
+        <div class="product-grid">
+        <div *ngIf="!resultados" class="row">
+            <kendo-splitter-pane>
+                <kendo-tabstrip>
+                    <kendo-tabstrip-tab [title]="'Datos'" [selected]="true">
+                        <ng-template kendoTabContent>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <!-- TABLE: LATEST ORDERS -->
+                                        <div class="box box-red">
+                                            <div class="box-header with-border">
+                                                <div class="box-tools pull-right">
+                                                </div>
+                                            </div>
+                                            <div class="box-body">
+                                              <div>       
+                                                <!-- [sortable]="{ allowUnsort: allowUnsort,
+                                                  mode: multiple ? 'multiple' : 'single'
+                                                  }" [sort]="sort" (sortChange)="sortChange($event)" [pageable]="true" [filter]="filter" filterable="menu" (filterChange)="filterChange($event)"  -->
+                                                  <!-- (groupChange)="groupChange($event)"                                             -->
+
+                                                  <!-- [groupable]="{ showFooter: true }" -->
+
+                                                  <kendo-grid 
+                                                      [group]="state.group"
+                                                      (dataStateChange)="dataStateChange($event)"
+                                                        [data]="gridData" [height]="700" [pageSize]="state.take" [skip]="state.skip"  
+                                                        (dataStateChange)="dataStateChange($event)" 
+                                                         >
+                                                        <kendo-grid-messages groupPanelEmpty="Drag here to group" noRecords="No se encontraron items para mostrar." filterContainsOperator="Contiene" filterEndsWithOperator="Termina con" filterAfterOperator="es posterior" filterAfterOrEqualOperator="es posterior o igual a"
+                                                            filterBeforeOperator="es anterior" filterBeforeOrEqualOperator="es anterior o igual a" filterBooleanAll="Todo" filterClearButton="Limpiar" filterEndsWithOperator="Termina con" filterEqOperator="Es igual a"
+                                                            filterFilterButton="Filtro" filterGtOperator="es mayor que" filterGteOperator="es mayor o igual que" filterIsEmptyOperator="Está vacío" filterIsFalse="Falso" filterIsNotEmptyOperator="no está vacío"
+                                                            filterIsNotNullOperator="no es nulo" filterIsNullOperator="es nulo" filterIsTrue="Verdadero" filterLtOperator="es menor que" filterLteOperator="es menor o igual que" filterNotContainsOperator="No contiene"
+                                                            filterNotEqOperator="No es igual a" filterStartsWithOperator="comienza con" groupPanelEmpty="Gupo Vacío" NoRecords="sin registros" pagerFirstPage="Primera página" pagerLastPage="Ultima" pagerNextPage="Siguiente"
+                                                            pagerPreviousPage="Anterior" pagerPage="Página" pagerOf="de" pagerItems="ítems" pagerItemsPerPage="ítems por página">
+                                                        </kendo-grid-messages>
+                                                        <div>
+                                                            <kendo-grid-column field="cod_linea" title="Linea" width="50">
+                                                                <!-- <ng-template kendoGridGroupHeaderTemplate let-group let-field="field" let-value="value">
+                                                                   <strong>Linea</strong>: {{value}} 
+                                                                </ng-template> -->
+                                                                <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                                                                  <span class="danger" title="Totales Pedidos pares">
+                                                                    Totales Pedido 
+                                                                  </span>
+                                                                </ng-template>
+
+                                                                <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+                                                                  <span title="Group Footer Template para linea">
+                                                                      Cuenta: {{ aggregates.cod_linea.count }}
+                                                                  </span>
+                                                              </ng-template>
+                                                                <!-- <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" let-isNew="isNew">
+                                                                  <input #input class="k-textbox" [formControl]="formGroup.get(column.field)">
+                                                                  <kendo-popup
+                                                                    [anchor]="input"
+                                                                    *ngIf="formGroup.get(column.field).invalid && !(isNew && formGroup.get(column.field).untouched)"
+                                                                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                                                                   >
+                                                                    <span class="k-icon k-i-warning"></span>
+                                                                    Linea es requerida
+                                                                  </kendo-popup>
+                                                                </ng-template> -->
+                                                            </kendo-grid-column>      
+                                                            <kendo-grid-column field="cod_color" title="Color" width="50">
+                                                                <!-- <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" let-isNew="isNew">
+                                                                  <input #input class="k-textbox" [formControl]="formGroup.get(column.field)">
+                                                                  <kendo-popup
+                                                                    [anchor]="input"
+                                                                    *ngIf="formGroup.get(column.field).invalid && !(isNew && formGroup.get(column.field).untouched)"
+                                                                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                                                                   >
+                                                                    <span class="k-icon k-i-warning"></span>
+                                                                    Color es requerido
+                                                                  </kendo-popup>
+                                                                </ng-template> -->
+                                                            </kendo-grid-column>      
+                                                            <kendo-grid-column field="cod_curva" title="Curva" width="50">
+                                                                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" let-isNew="isNew">
+                                                                  <input #input class="k-textbox" [formControl]="formGroup.get(column.field)">
+                                                                </ng-template>
+                                                            </kendo-grid-column>      
+                                                            <kendo-grid-column field="talla" title="Talla" width="50">
+                                                                <!-- <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" let-isNew="isNew">
+                                                                  <input #input class="k-textbox" [formControl]="formGroup.get(column.field)">
+                                                                </ng-template> -->
+                                                            </kendo-grid-column>      
+                                                            <kendo-grid-column field="cantidad" title="Cantidad" width="80">
+                                                                <!-- <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" let-isNew="isNew">
+                                                                    <kendo-numerictextbox
+                                                                      #ntb="popupAnchor"
+                                                                      popupAnchor
+                                                                      [formControl]="formGroup.get(column.field)"></kendo-numerictextbox>
+                                                                    <kendo-popup
+                                                                      [anchor]="ntb.element"
+                                                                      *ngIf="formGroup.get(column.field).invalid && !(isNew && formGroup.get(column.field).untouched)"
+                                                                      popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                                                                     >
+                                                                      <span class="k-icon k-i-warning"></span>
+                                                                      Cantidad debe ser  > 0
+                                                                    </kendo-popup>
+                                                                  </ng-template> -->
+                                                              </kendo-grid-column>
+                                                              <kendo-grid-column field="tpares"  width="80" title="Pares" >
+                                                                <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                                                                  <span class="danger" title="Totales Pedidos pares">
+                                                                    Pares: {{ totalpares }}
+                                                                  </span>
+                                                                </ng-template>
+                                                                  <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+                                                                    <span title="Totla Grupo para pares">
+                                                                      Total: {{ aggregates.tpares.sum }}
+                                                                  </span>
+                                                              </ng-template>
+                                                  
+                                                              </kendo-grid-column>
+                                                              <kendo-grid-column field="precio" [format]="{ style: 'currency', currency: 'COP' }" width="80" title="Val/Unitario" >
+                                                              </kendo-grid-column>
+                                                              <kendo-grid-column field="total"  [format]="{ style: 'currency', currency: 'COP' }" width="80" title="Total" >
+                                                                <ng-template kendoGridGroupFooterTemplate let-group="group" let-aggregates>
+                                                                  <span title="Total grupo para Totales">
+                                                                      Total: {{ aggregates.total.sum | currency:'CAD':'symbol-narrow':'4.2-2'}}
+                                                                  </span>
+                                                              </ng-template>
+                                                              <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
+                                                                <!-- {{column.field}}({{columnIndex}}) -->
+                                                                <span class="danger" title="Totales Pedidos Total">
+                                                                  Total: {{ totalpedido | currency:'CAD':'symbol-narrow':'4.2-2'}}
+                                                                </span>
+                                                              </ng-template>
+                                                            </kendo-grid-column>
+
+                                                              
+                                                            <!-- <kendo-grid-column field="cod_cargo" width="80" title="Código" >
+                                                                <ng-template kendoGridFilterMenuTemplate let-column="column" let-filter="filter" let-filterService="filterService">
+                                                                    <multicheck-filter [isPrimitive]="true" [field]="column.field" [filterService]="filterService" [currentFilter]="filter" [data]="distinctPrimitive(column.field)"></multicheck-filter>
+                                                                </ng-template>
+                                                            </kendo-grid-column> -->
+                                                            <!-- <kendo-grid-column field="cod_cargo" title="Código" width="100">
+                                                                <ng-template kendoGridEditTemplate let-column="column" let-formGroup="formGroup" let-isNew="isNew">
+                                                                  <input #input class="k-textbox" [formControl]="formGroup.get(column.field)">
+                                                                  <kendo-popup
+                                                                    [anchor]="input"
+                                                                    *ngIf="formGroup.get(column.field).invalid && !(isNew && formGroup.get(column.field).untouched)"
+                                                                    popupClass="k-widget k-tooltip k-tooltip-validation k-invalid-msg"
+                                                                   >
+                                                                    <span class="k-icon k-i-warning"></span>
+                                                                    Se requiere el código del cargo.
+                                                                  </kendo-popup>
+                                                                </ng-template>
+                                                            </kendo-grid-column>                                                             -->
+                                                        </div>
+                                                        <!-- <kendo-grid-command-column title="opción" width="120">
+                                                            <ng-template kendoGridCellTemplate>
+                                                                <button kendoGridEditCommand [primary]="true">Editar</button>
+                                                                <button kendoGridRemoveCommand>Eliminar</button>
+                                                            </ng-template>
+                                                        </kendo-grid-command-column> -->
+
+                                                        <!-- <kendo-grid-command-column title="opción" width="220">
+                                                            <ng-template kendoGridCellTemplate let-isNew="isNew">
+                                                                <button kendoGridEditCommand [primary]="true">Editar</button>
+                                                                <button kendoGridRemoveCommand>Eliminar</button>
+                                                                <button kendoGridSaveCommand [disabled]="formGroup?.invalid">{{ isNew ? 'Adicionar' : 'Actualizar' }}</button>
+                                                                <button kendoGridCancelCommand>{{ isNew ? 'Ignorar cambios' : 'Cancelar' }}</button>
+                                                            </ng-template>
+                                                         </kendo-grid-command-column>                                                         -->
+                                                    </kendo-grid>
+                                                    <!-- <kendo-grid-edittp-form [model]="editDataItem" [isNew]="isNew" (save)="saveHandler($event)" (cancel)="cancelHandler()">
+                                                    </kendo-grid-edittp-form> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-tabstrip-tab>       
+                    <kendo-tabstrip-tab [title]="'Log'">
+                        <ng-template kendoTabContent>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <!-- <div class="col-md-12"> -->
+                                  <div class="col-xl-4 xl-50">
+                                    <div class="card">
+                                      <div class="card-header">
+                                        <h5>Log de Cambios</h5>
+                                      </div>
+                                      <div class="card-body">
+                                        <div class="timeline-small">
+                                          <div class="media" *ngFor="let itemf of log; let i = index;">
+                                            <div *ngIf="itemf.accion==='Adicionado'" class="timeline-round m-r-30 timeline-line-1 bg-primary">
+                                                <!-- <app-feather-icons [icon]="'plus'"></app-feather-icons> -->
+                                             </div>
+                                             <div *ngIf="itemf.accion==='Modificado'" class="timeline-round m-r-30 timeline-line-1 bg-warning">
+                                                <!-- <app-feather-icons [icon]="'edit'"></app-feather-icons> -->
+                                             </div>
+                                            <div *ngIf="itemf.accion==='Eliminado'" class="timeline-round m-r-30 timeline-line-1 bg-danger">
+                                                <!-- <app-feather-icons [icon]="'trash-2'"></app-feather-icons> -->
+                                             </div>
+  
+                                            <div class="media-body">
+                                              <h6> {{itemf.usuario}} <span class="pull-right f-14"> {{itemf.fechastr}} - {{itemf.horastr}}</span></h6>
+                                              <p>{{itemf.seguimiento}}</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>                            
+                        </ng-template>
+                    </kendo-tabstrip-tab>   
+                </kendo-tabstrip>
+            </kendo-splitter-pane>
+        </div>        
+    </div>
+</div>
+<!-- Container-fluid Ends-->

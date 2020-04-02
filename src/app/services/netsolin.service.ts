@@ -110,7 +110,15 @@ export class NetsolinService {
 	}
 
 	getNetsolinslide(): Observable<any> {
-		return this.http.get(NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=MTB")
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=MTB";
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=MTB";
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map get');
@@ -123,7 +131,15 @@ export class NetsolinService {
 
 
 	getNetsolinMonitores(): Observable<any> {
-		return this.http.get(NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=CRMI")
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=CRMI";
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=CRMI";
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinMonitores');
@@ -134,7 +150,15 @@ export class NetsolinService {
 	}
 
 	getNetsolinMantbas(ptipo, pmodulo): Observable<any> {
-		return this.http.get(NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=" + ptipo + "&VRModulo=" + pmodulo)
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=" + ptipo + "&VRModulo=" + pmodulo;
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=" + ptipo + "&VRModulo=" + pmodulo;
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinMantbas');
@@ -143,8 +167,44 @@ export class NetsolinService {
 				})
 			);
 	}
+
+	//Traer un cliente de Netsolin con datos basicos y direcciones
+	getClienteNetsolin(cod_tercer: string, datosped: any): Observable<any> {
+		console.log('gerCliente url:',NetsolinApp.urlNetsolin + "netsolin_servirestgo.csvc?VRCod_obj=RESTDATCLIEAPP");		
+		NetsolinApp.objenvrest.filtro = cod_tercer;
+		let paramgrab = {
+			items_pedido: datosped,
+			usuario: NetsolinApp.oapp.cuserid
+		  };
+		NetsolinApp.objenvrest.parametros = paramgrab;
+		console.log('NetsolinApp.objenvrest.parametros:',NetsolinApp.objenvrest.parametros);		 
+		var url: string = "";
+		if (environment.production) {
+			url =NetsolinApp.urlNetsolin + "netsolin_servirestgo.csvc?VRCod_obj=RESTDATCLIEAPP";
+		} else {
+			url = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolin_servirestgo.csvc?VRCod_obj=RESTDATCLIEAPP";
+		}
+		console.log('NetsolinApp.objenvrest:',NetsolinApp.objenvrest);			   
+		return this.http.post( url, NetsolinApp.objenvrest)
+			.pipe(
+				map(resul => {
+					console.log('map getClienteNetsolin');
+					 console.log(resul);
+					return resul;
+				})
+			);
+	}
+	
 	getNetsolinAlertas(): Observable<any> {
-		return this.http.get(NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=ALER")
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=ALER";
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=ALER";
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					console.log('map getNetsolinAlertas');
@@ -154,7 +214,15 @@ export class NetsolinService {
 			);
 	}
 	getNetsolinUsuar(): Observable<any> {
-		return this.http.get(NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=USUAR")
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=USUAR";
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=USUAR";
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinAlertas');
@@ -165,7 +233,15 @@ export class NetsolinService {
 	}
 
 	getNetsolinRecordatorio(): Observable<any> {
-		return this.http.get(NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=SEG")
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=SEG";
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=SEG";
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					return resul;
@@ -174,7 +250,15 @@ export class NetsolinService {
 	}
 
 	getNetsolinProcesos(): Observable<any> {
-		return this.http.get(NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=PROC")
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=PROC";
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=PROC";
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinProcesos');
@@ -184,7 +268,15 @@ export class NetsolinService {
 			);
 	}
 	getNetsolinSolicitudes(): Observable<any> {
-		return this.http.get(NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=SOLI")
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=SOLI";
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=SOLI";
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinSolicitudes');
@@ -196,7 +288,15 @@ export class NetsolinService {
 
 
 	getNetsolinMessages(): Observable<any> {
-		return this.http.get(NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=MENS")
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=MENS";
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=MENS";
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinMessages');
@@ -206,7 +306,15 @@ export class NetsolinService {
 			);
 	}
 	getNetsolinSolic(): Observable<any> {
-		return this.http.get(NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=SOLI")
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=SOLI";
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolinmenu.csvc?VRTipo=SOLI";
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					return resul;
@@ -240,7 +348,15 @@ export class NetsolinService {
 		NetsolinApp.objenvrestddtabla.tabla = "GENERAL";
 		NetsolinApp.objenvrestddtabla.aplica = 0;
 		NetsolinApp.objenvrestddtabla.objeto = pobjeto;
-		return this.http.post(NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTCONSEGOBJ", NetsolinApp.objenvrestddtabla)
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTCONSEGOBJ", NetsolinApp.objenvrestddtabla;
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTCONSEGOBJ", NetsolinApp.objenvrestddtabla;
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinSegObj');
@@ -259,7 +375,15 @@ export class NetsolinService {
 		NetsolinApp.objenvrestddtabla.tabla = "GENERAL";
 		NetsolinApp.objenvrestddtabla.aplica = 0;
 		NetsolinApp.objenvrestddtabla.objeto = pobjeto;
-		return this.http.post(NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA", NetsolinApp.objenvrestddtabla)
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA", NetsolinApp.objenvrestddtabla;
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA", NetsolinApp.objenvrestddtabla;
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinObjmantbasica');
@@ -282,7 +406,15 @@ export class NetsolinService {
 		NetsolinApp.objenvrestddtabla.tabla = "GENERAL";
 		NetsolinApp.objenvrestddtabla.aplica = 0;
 		NetsolinApp.objenvrestddtabla.objeto = pobjeto;
-		return this.http.post(NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA", NetsolinApp.objenvrestddtabla)
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA", NetsolinApp.objenvrestddtabla;
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+"Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA", NetsolinApp.objenvrestddtabla;
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(result => {
 					// console.log('map getNetsolinObjmantbasica');
@@ -377,7 +509,15 @@ export class NetsolinService {
 		NetsolinApp.objenvrestsolcomobog.aplica = 0;
 		NetsolinApp.objenvrestsolcomobog.filtro = pcadbus;
 		NetsolinApp.objenvrestsolcomobog.filtroadi = pfiltroadi;
-		return this.http.post(NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=" + pobjeto, NetsolinApp.objenvrestsolcomobog)
+		var paramSolicitud: string = "";
+
+		if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=" + pobjeto, NetsolinApp.objenvrestsolcomobog;
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+"Ejeservi_rest.csvc?VRCod_obj=" + pobjeto, NetsolinApp.objenvrestsolcomobog;
+		}
+
+		return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinObjbusqueda');
@@ -407,7 +547,15 @@ export class NetsolinService {
 		NetsolinApp.objenvrest.parametros = pparam;
 		if (NetsolinApp.objenvrest.tiporet != "OBJ")
 			NetsolinApp.objenvrest.tiporet = "CON";
-		return this.http.post(NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=" + pobjeto, NetsolinApp.objenvrest)
+			var paramSolicitud: string = "";
+
+			if (environment.production) {
+				paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=" + pobjeto, NetsolinApp.objenvrest;
+			} else {
+				paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+"Ejeservi_rest.csvc?VRCod_obj=" + pobjeto, NetsolinApp.objenvrest;
+			}
+	
+			return this.http.get(paramSolicitud)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinObjconParametros');
@@ -750,6 +898,45 @@ export class NetsolinService {
 					})
 				)
 			);
+	}
+	public getPedRecibPendientesFB() {
+		return this.fbDb
+			.collection(`/pedidos`
+				, ref => ref.where('verificado', '==', false))
+			.valueChanges()
+			.pipe(
+				map(actions =>
+					actions.map((a: any) => {
+						const ref: AngularFirestoreDocument<any> = this.fbDb.collection(`usuarios`).doc(a.email);
+						ref.get().subscribe(snap => {
+							// console.log('dat empresa asociada',snap);
+							if (snap.exists) {
+								const datempre= snap.data();
+								// console.log('Existe empresa data', snap.data());
+								a.nom_empresa = datempre.Empresa; 
+							} 
+						});						
+						console.log('retorna dato a:',a);
+						return a;
+						// console.log(a);
+						// a.fecha = a.fecha.toDate();
+						// a.fechaevalua = a.fechaevalua.toDate();
+						// a.fecharepornetsolin= a.fecharepornetsolin.toDate();
+						// a.fechasolucionado = a.fechasolucionado.toDate();
+
+					})
+				)
+			);
+	}
+	public getPedidoFB(idped) {
+		return this.fbDb
+			.collection(`/pedidos`).doc(idped)
+			.valueChanges();			
+	}
+	public getClienteFB(id) {
+		return this.fbDb
+			.collection(`/empresas`).doc(id)
+			.valueChanges();			
 	}
 
 	public grabarusuarioregFb(data: any, isNew?: boolean) {
@@ -1466,7 +1653,7 @@ deleteCatalogos() {
 								itemcat.link_img = url;
 								console.log('Se actualiza imagen para linea: ' + itemcat.linea, itemcat.link_img);
 								this.linsegproceso = 'Actualizando imagen ' +lnumitem +' de '+ lnumlineas+' linea: '+ itemcat.linea.trim() + '.jpg';
-								this.fbDb.collection('armacatl').doc(itemcat.linea).set(itemcat);
+								this.fbDb.collection('armacatl').doc(itemcat.cod_catalogo.trim()+itemcat.linea.trim()+itemcat.version.trim()).set(itemcat);
 							},
 								err => {
 									refsusc.unsubscribe();
@@ -1474,7 +1661,7 @@ deleteCatalogos() {
 									console.log('No hay imagen para linea: ' + itemcat.linea);
 									itemcat.link_img = '';
 									this.linsegproceso = 'Actualizando imagen ' +lnumitem +' de '+ lnumlineas+' linea: '+ itemcat.linea.trim() + '.jpg';
-									this.fbDb.collection('armacatl').doc(itemcat.linea).set(itemcat);	
+									this.fbDb.collection('armacatl').doc(itemcat.cod_catalogo.trim()+itemcat.linea.trim()+itemcat.version.trim()).set(itemcat);	
 									// this.fbDb.collection('armacatl').doc(itemcat.linea).set(itemcat);                
 								});
 						}
@@ -1505,14 +1692,14 @@ deleteCatalogos() {
 							itemcat.link_img = url;
 							console.log('Se actualiza imagen para color: ' + itemcat.color, itemcat.link_img);
 							this.linsegproceso = 'Actualizando imagen ' +lnumitem +' de '+ lnumlineas+' linea color: ' + itemcat.color.trim() + '.jpg';
-							this.fbDb.collection('armacatlcol').doc(itemcat.color).set(itemcat);
+							this.fbDb.collection('armacatlcol').doc(itemcat.cod_catalogo.trim()+itemcat.linea.trim()+itemcat.color.trim()+itemcat.version.trim()).set(itemcat);
 						},
 							err => {
 								refsusc.unsubscribe();
 								console.log('No hay imagen para color: ' + itemcat.color);
 								this.linsegproceso = 'No se encontro imagen ' +lnumitem +' de '+ lnumlineas+' color: ' + itemcat.color.trim() + '.jpg';
 								itemcat.link_img = '';
-								this.fbDb.collection('armacatlcol').doc(itemcat.color).set(itemcat);
+								this.fbDb.collection('armacatlcol').doc(itemcat.cod_catalogo.trim()+itemcat.linea.trim()+itemcat.color.trim()+itemcat.version.trim()).set(itemcat);
 									// this.fbDb.collection('armacatl').doc(itemcat.linea).set(itemcat);                
 							});
 					});
@@ -1522,6 +1709,8 @@ deleteCatalogos() {
 			resolve(true);
 		});
 	}
+
+
 
 }
 

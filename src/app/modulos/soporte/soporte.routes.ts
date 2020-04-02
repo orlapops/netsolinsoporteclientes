@@ -13,6 +13,8 @@ import { AddregtbasicaComponent } from '../../mantablasbasicas/tbasica/adicionar
 import { VerregtbasicaComponent } from '../../mantablasbasicas/tbasica/ver/ver.component';
 import { EditregtbasicaComponent } from '../../mantablasbasicas/tbasica/editar/editar.component';
 import { MenuTbasComponent } from '../../mantablasbasicas/tbasica/menumtablas/menumtablas.component';
+import { MonitorPedRecibidosComponent } from './monitores/pedidosrecibidos/monitorpedrecib.component';
+import { DetaPedidoComponent } from './monitores/pedidosrecibidos/detapedidos/detaped.component';
 
 //Op marzo 7 18 Modelo soporte del modulo principal
 //cambiar palabra modelo
@@ -24,6 +26,8 @@ const soporteRoutes: Routes = [
         component: SoporteComponent,
         children: [
             { path: 'home', component: MonitorPrinSoporteComponent, data: { titulo: 'Monitor Principal' } },
+            { path: 'pedidos', component: MonitorPedRecibidosComponent, data: { titulo: 'Monitor Pedidos' } },            
+            { path: 'pedidodeta/:id_ped', component: DetaPedidoComponent, data: { titulo: 'Monitor Pedidos' } },            
             {path: 'menutbas', component: MenuTbasComponent, data: { titulo: 'Menu Principal' }},
             { path: 'monitorprinsoporte', component: MonitorPrinSoporteComponent, data: { titulo: 'Monitor Principal' } },           
             { path: 'mantbasica/:objeto', component: MantBasicaComponent, data: { titulo: 'Mantenimiento' }},

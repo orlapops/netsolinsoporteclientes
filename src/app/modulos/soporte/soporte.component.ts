@@ -46,7 +46,7 @@ export class SoporteComponent implements OnInit {
   nit_empresa = "";
   cuserid = "";
   mostrarmensaje = false;
-
+  clienteActual = null;
   ngOnInit() {
     // console.log('ngOnInit app.componet');
     this.httpc.get("assets/netsolin_ini.json").subscribe(data => {

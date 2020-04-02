@@ -53,6 +53,7 @@ import { LayoutModule } from '@progress/kendo-angular-layout';
 import { GridModule,ExcelModule  } from '@progress/kendo-angular-grid';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { ChartsModule } from '@progress/kendo-angular-charts';
+import { PopupModule } from '@progress/kendo-angular-popup';
 
 import '@progress/kendo-angular-intl/locales/es/all';
 import { AppmenuSoporteComponent } from './componentes/appmenuizq/appmenu.component';
@@ -68,6 +69,9 @@ import { DateRangeFilterComponent } from '../../netsolinlibrerias/filtromultiple
 import { EditService } from '../../services/Editsoporte.service';
 import { GridEditFormComponent } from './edit-form.Soporte.component';
 import { Netsprocactdatos } from './componentes/procactdatos/procactdatosmodal.componet';
+import { MonitorPedRecibidosComponent } from './monitores/pedidosrecibidos/monitorpedrecib.component';
+import { DetaPedidoComponent } from './monitores/pedidosrecibidos/detapedidos/detaped.component';
+import { PopupAnchorDirective } from '../../netsolinlibrerias/directive/popup.anchor-target.directive';
 // import { GridEditFormarchComponent } from './monitores/incidencia/edit-formarch.Soporte.component';
 registerLocaleData(localeEs, 'es')
 @NgModule({
@@ -75,16 +79,20 @@ registerLocaleData(localeEs, 'es')
         SoporteComponent,
         Netssoportebusqueda,
         Netsprocactdatos,
+        DetaPedidoComponent,
         MonitorPrinSoporteComponent,
+        MonitorPedRecibidosComponent,
         MonitorGeneralComponent,
         MonitorObjetotablaComponent,
         AppmenuSoporteComponent,
         MultiCheckFilterComponent,
         DateRangeFilterComponent,
         GridEditFormComponent,
+        PopupAnchorDirective
     ],
     exports: [
         MonitorPrinSoporteComponent,
+        MonitorPedRecibidosComponent,
         Netssoportebusqueda,
         Netsprocactdatos,
         MonitorGeneralComponent,
@@ -121,6 +129,7 @@ registerLocaleData(localeEs, 'es')
         GridModule,
         ExcelModule,
         ChartsModule,
+        PopupModule,
         DateInputsModule,
         EditorModule,
         
