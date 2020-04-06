@@ -30,6 +30,11 @@ const createFormGroup = dataItem => new FormGroup({
   templateUrl: './detaped.component.html',
   styleUrls: ['./detaped.component.scss']
 })
+// interface Item {
+//   text: string ,
+//   value: number;
+// }
+
 export class DetaPedidoComponent implements OnInit {
   @Input() id_tipo: any;
   //kendo grid
@@ -47,9 +52,12 @@ export class DetaPedidoComponent implements OnInit {
   clienteActual: any;
   direccionesclieact: any;
   lineaprecio: any;
-  cartera: any;
+  // cartera: any;
   totalpares = 0;
   totalpedido = 0;
+  public notasped ='';
+  public dirdespa: any;
+  public listDirec: Array<{ text: string, value: number }> = [];
 
 
   public filter: CompositeFilterDescriptor;
@@ -130,7 +138,7 @@ export class DetaPedidoComponent implements OnInit {
         this.cargoclienteNetsolin = false;
         this.cargaClienteNetsolin(datos.id_empresa, datos.items).then(() => {
           console.log('cliente actual', this.clienteActual);
-          console.log('cliente cartera', this.cartera);
+          // console.log('cliente cartera', this.cartera);
           console.log('cliente lineaprecio', this.lineaprecio);
           //Organizar pedido de acuerdo a curvas y tallas
           datos.items.forEach(itemped => {
@@ -141,7 +149,7 @@ export class DetaPedidoComponent implements OnInit {
               itemped.curvas.forEach(itemcurva => {
                 if (itemcurva.cantidad > 0) {
                   const areg = {
-                    cod_linea: itemped.linea,
+                    cod_linea: itemped.linea.trim() + ' | ' + lineavend.nom_linea.trim(),
                     cod_color: itemped.color,
                     cod_curva: itemcurva.curva,
                     talla: '',
@@ -167,7 +175,7 @@ export class DetaPedidoComponent implements OnInit {
               itemped.tallas.forEach(itemtalla => {
                 if (itemtalla.cantidad > 0) {
                   const areg = {
-                    cod_linea: itemped.linea,
+                    cod_linea: itemped.linea.trim() + ' | ' + lineavend.nom_linea.trim(),
                     cod_color: itemped.color,
                     cod_curva: '',
                     talla: itemtalla.talla,
@@ -247,99 +255,7 @@ export class DetaPedidoComponent implements OnInit {
 
     this.gridData = process(this.datospedido, this.state);
   }
-  //Kendo
-  // public sortChange(sort: SortDescriptor[]): void {
-  //   this.sort = sort;
-  //   this.gridData = orderBy(this.datospedido, this.sort);
-  // }
-  // public filterChange(filter: CompositeFilterDescriptor): void {
-  //   this.filter = filter;
-  //   this.gridData = filterBy(this.datospedido, filter);
-  // }
-  // public editHandler({dataItem}) {
-  //   console.log('editHandler dataItem:',dataItem);
-  //   this.editDataItem = dataItem;
-  //   this.isNew = false;
-  // }
 
-  protected editHandler({ sender, rowIndex, dataItem }) {
-    this.closeEditor(sender);
-
-    this.formGroup = createFormGroup(dataItem);
-
-    this.editedRowIndex = rowIndex;
-    this.editDataItem = dataItem;
-
-    sender.editRow(rowIndex, this.formGroup);
-
-
-    // // define all editable fields validators and default values
-    // console.log('editHandler',sender, rowIndex, dataItem,this.editDataItem);
-    // // this.editDataItem = dataItem;
-    // const group = new FormGroup({
-    //     'cod_cargo': new FormControl(dataItem.cod_cargo),
-    //     'name': new FormControl(dataItem.name, Validators.required)
-    // });
-
-    // // put the row in edit mode, with the `FormGroup` build above
-    // sender.editRow(rowIndex, group);
-  }
-
-  // public addHandler() {
-  //   this.editDataItem = new Cargo();
-  //   this.editDataItem.cod_cargo = '';
-  //   this.editDataItem.name = '';
-  //   this.isNew = true;
-  // }
-  // public distinctPrimitive(fieldName: string): any {
-  //   // console.log('distinctPrimitive this.incidentespen:',this.incidentespen,fieldName);
-  // return distinct(this.datospedido, fieldName).map(item => item[fieldName]);
-  // }
-  protected addHandler({ sender }) {
-    this.closeEditor(sender);
-
-    this.formGroup = createFormGroup({
-      'cod_cargo': '',
-      'name': ''
-    });
-
-    sender.addRow(this.formGroup);
-    // // define all editable fields validators and default values
-    // const group = new FormGroup({
-    //     'cod_cargo': new FormControl(),
-    //     'name': new FormControl("", Validators.required)
-    // });
-
-    // // show the new row editor, with the `FormGroup` build above
-    // sender.addRow(group);
-  }
-  protected cancelHandler({ sender, rowIndex }) {
-    // close the editor for the given row
-    this.closeEditor(sender, rowIndex);
-    // sender.closeRow(rowIndex)
-  }
-  private closeEditor(grid, rowIndex = this.editedRowIndex) {
-    grid.closeRow(rowIndex);
-    this.editedRowIndex = undefined;
-    this.formGroup = undefined;
-  }
-  public async removeHandler({ dataItem }) {
-    console.log('removeHandler dataItem', dataItem);
-    await this.validaexistenCargo(dataItem.cod_cargo).then((resp: any) => {
-      console.log('llega promesa resp:', resp)
-      if (resp) {
-        // this.toastr.error('Cargo: '+dataItem.cod_cargo+' Tiene registros en cargos. No eliminada!');
-      } else {
-        // this.curService.deleteDocFb(this.linkFb,dataItem.id_reg);
-        // this.curService.regLogFb(this.linkFblog, dataItem, dataItem.id_reg,'Eliminado','Se elimino cargo: '+dataItem.cod_cargo);
-        // this.showDelete();
-      }
-    });
-  }
-
-  showDelete() {
-    // this.toastr.error('Registro Eliminado !');
-  }
 
 
   public showAlerta(ptitulo, palerta) {
@@ -358,95 +274,10 @@ export class DetaPedidoComponent implements OnInit {
   public monitorClick(dataItem): void {
   }
 
-  protected async saveHandler({ sender, rowIndex, formGroup, isNew }) {
-    // collect the current state of the form
-    // `formGroup` arguments is the same as was provided when calling `editRow`
-    console.log('saveHandler', sender, rowIndex, formGroup, isNew);
-    // const product: Product = formGroup.value;
-
-    // update the data source
-    if (isNew) {
-      const datospedidog = {
-        cod_cargo: formGroup.value.cod_cargo.toUpperCase(),
-        name: formGroup.value.name,
-      };
-      console.log('a grabar', formGroup.value, datospedidog);
-      await this.validaexistecodigo(datospedidog.cod_cargo).then((resp: any) => {
-        console.log('llega promesa resp:', resp)
-        if (resp) {
-          // this.toastr.error('Cargo: '+datospedidog.cod_cargo+' ya se encunetra. No adicionado!');
-        } else {
-          // this.curService.addDocConIdFb( datospedidog.cod_cargo,this.linkFb,datospedidog);      
-          // this.curService.regLogFb(this.linkFblog,datospedidog,datospedidog.cod_cargo,'Adicionado','Se adiciono Cargo: '+datospedidog.cod_cargo);  
-        }
-      });
-    } else {
-      console.log('a modificar', formGroup.value, this.editDataItem);
-      this.editDataItem.name = formGroup.value.name;
-      // this.curService.actDocFb(this.editDataItem.id_reg, this.linkFb, this.editDataItem);
-      // this.curService.regLogFb(this.linkFblog, this.editDataItem, this.editDataItem.id_reg, 'Modificado','Se modifico Cargo: '+this.editDataItem.cod_cargo);
-      console.log('editar ', this.editDataItem);
-    }
-    // this.editService.save(product, isNew);
-
-    // close the editor, that is, revert the row back into view mode
-    sender.closeRow(rowIndex);
-  }
-  public async saveHandler1(datostp: Pedido) {
-    console.log('a grabar ', datostp, this.isNew, this.editDataItem);
-    if (this.isNew) {
-      const datospedidog = {
-        cod_cargo: datostp.cod_cargo.toUpperCase(),
-        name: datostp.name,
-      };
-      console.log('a grabar', datostp);
-      await this.validaexistecodigo(datospedidog.cod_cargo).then((resp: any) => {
-        console.log('llega promesa resp:', resp)
-        if (resp) {
-          // this.toastr.error('Tipo personal: '+datospedidog.cod_cargo+' ya se encunetra. No adicionado!');
-        } else {
-          // this.curService.addDocConIdFb( datospedidog.cod_cargo,this.linkFb,datospedidog);      
-          // this.curService.regLogFb(this.linkFblog,datospedidog,datospedidog.cod_cargo,'Adicionado','Se adiciono Cargo: '+datospedidog.cod_cargo);  
-        }
-      });
-    } else {
-      this.editDataItem.name = datostp.name;
-      // this.curService.actDocFb(this.editDataItem.id_reg, this.linkFb, this.editDataItem);
-      // this.curService.regLogFb(this.linkFblog, this.editDataItem, this.editDataItem.id_reg, 'Modificado','Se modifico Cargo: '+this.editDataItem.cod_cargo);
-      console.log('editar ', this.editDataItem);
-    }
-    this.editDataItem = undefined;
-  }
-
-  public validaexistecodigo(pcodigo) {
+  public GrabarPedidos() {
+    console.log('Grabando pedido notasped, dirdespa, gridData',this.notasped, this.dirdespa, this.gridData);
+    
     return new Promise((resolve) => {
-      // console.log('validaexistecodigo 1',pcodigo,this.linkFb);
-      // this.curService.consultaCollectionWhereValFb(this.linkFb,'cod_cargo',pcodigo).subscribe( (data:any) =>{
-      //   console.log('validaexistecodigo',data);
-      //   if (data.length){
-      //       console.log('exsite logn >0',data);
-      //       resolve(true); 
-      //   } else {
-      //     console.log('no exsite logn 0');
-      //     resolve(false); 
-      //   }
-      // }); 
-    });
-  }
-  //Verifica en el detalle de un tipo de personal si tiene personal asignado
-  public validaexistenCargo(pcodigo) {
-    return new Promise((resolve) => {
-      console.log('validaexistenregenpersonaldetalle 1', pcodigo);
-      // this.curService.consultaCollectionWhereFb(this.linkFbPersonal,'cod_cargo',pcodigo).subscribe( (data:any) =>{
-      //   console.log('validaexistenregenpersonaldetalle',data);
-      //   if (data.length){
-      //       console.log('exsite logn >0',data);
-      //       resolve(true); 
-      //   } else {
-      //     console.log('no exsite logn 0');
-      //     resolve(false); 
-      //   }
-      // }); 
     });
   }
 
@@ -474,15 +305,26 @@ export class DetaPedidoComponent implements OnInit {
 
             this.direccionesclieact = data.direcciones;
             console.log('Direcciones traidas', this.direccionesclieact);
+            this.direccionesclieact.forEach(itemreg =>{
+                const litem= { text: itemreg.direccion, value: itemreg.id_direc };
+                this.listDirec.push(litem);                
+            });
+            this.dirdespa = this.listDirec[0];
+            console.log('listDirec', this.listDirec);
             this.clienteActual = data.datos_gen[0];
             this.lineaprecio = data.precxlinea;
-            this.cartera = data.cartera;
+            // this.cartera = data.cartera;
             // console.log(this.clienteActual);
             resolve(true);
           }
         });
     })
   }
+  handleDirecChange(value) {
+  }
 
 
 }
+
+
+

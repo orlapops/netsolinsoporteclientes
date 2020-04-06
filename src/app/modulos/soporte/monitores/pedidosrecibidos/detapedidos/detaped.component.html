@@ -1,24 +1,46 @@
 <!-- Container-fluid starts-->
 <!-- <div *ngIf="oapp.datosEmpre" class="container-fluid product-wrapper" [class.sidebaron]="sidebaron"> -->
 <div  class="container-fluid product-wrapper" [class.sidebaron]="sidebaron">
-    <div class="Row" *ngIf="cargoclienteNetsolin">
-        <div  class='col-4'>
-            Cliente: {{clienteActual.cod_tercer +' / '+ clienteActual.cliente}}
-        </div>
-        <div  class='col-8'>
-          Cliente: {{'Lista de precios: ' +clienteActual.lista +' Forma de Pago: '+ clienteActual.for_pago}}
-      </div>
-
-    </div>
         <div class="product-grid">
         <div *ngIf="!resultados" class="row">
             <kendo-splitter-pane>
                 <kendo-tabstrip>
                     <kendo-tabstrip-tab [title]="'Datos'" [selected]="true">
                         <ng-template kendoTabContent>
-                            <div class="row">
+                          <div class="col-12 " *ngIf="cargoclienteNetsolin">
+                            <div class="card">
+                                <div class="card-block">
+                                        Cliente: {{clienteActual.cod_tercer +' / '+ clienteActual.cliente}}
+                                        {{'Lista de precios: ' +clienteActual.lista +' Forma de Pago: '+ clienteActual.for_pago}}
+                                        <div class="form-group">
+                                          <div class="col-xs-6 col-sm-3 col-md-3">
+                                            <label class="k-form-field">
+                                            <span>Notas</span>
+                                            <input class="k-textbox" placeholder="Notas del pedido"  [(ngModel)]="notasped" required />
+                                        </label>
+                                      </div>
+                                        
+                                          <div class="col-xs-6 col-sm-3 col-md-3">
+                                              <label class="k-form-field">
+                                                  <span>Dirección despacho</span>
+                                                  <kendo-combobox
+                                                      [textField]="'text'" 
+                                                      [valueField]="'value'" 
+                                                      [(ngModel)]="dirdespa"
+                                                      [data]="listDirec"
+                                                  >
+                                                  </kendo-combobox>
+                                              </label>
+                                          </div>                          
+                                        <p>
+                                          <button kendoButton (click)="GrabarPedidos()" primary="true">Generar Pedidos</button>
+                                      </p>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>                    
+                          <div class="row">
                                 <div class="col-md-12">
-                                    <div class="row">
                                         <!-- TABLE: LATEST ORDERS -->
                                         <div class="box box-red">
                                             <div class="box-header with-border">
@@ -48,7 +70,7 @@
                                                             pagerPreviousPage="Anterior" pagerPage="Página" pagerOf="de" pagerItems="ítems" pagerItemsPerPage="ítems por página">
                                                         </kendo-grid-messages>
                                                         <div>
-                                                            <kendo-grid-column field="cod_linea" title="Linea" width="50">
+                                                            <kendo-grid-column field="cod_linea" title="Linea" width="100">
                                                                 <!-- <ng-template kendoGridGroupHeaderTemplate let-group let-field="field" let-value="value">
                                                                    <strong>Linea</strong>: {{value}} 
                                                                 </ng-template> -->
@@ -184,7 +206,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                         </ng-template>
