@@ -29,20 +29,21 @@ export class NetscombogService extends BehaviorSubject<any> {
 	}
 
 	getItemsSg(objrest): Observable<any> {
-		// console.log('getItemsSg NetsolinApp.objenvrestsolcomobog llama NetsolComobog');
+		console.log('getItemsSg NetsolinApp.objenvrestsolcomobog llama NetsolComobog',NetsolinApp.urlNetsolin, objrest);
 		// console.log(objrest);
 		// return this.http.post(NetsolinApp.urlNetsolin + "listacuentas.csvc",NetsolinApp.objenvrest)
 		return this.http.post(NetsolinApp.urlNetsolin + "NetsolComobog.csvc", objrest)
 			.pipe(
 			map(resul => {
 				// console.log('getItemsSg resul objrest.tabla'+objrest.tabla);
-				// console.log(resul);
+				console.log(resul);
 				return resul;
 			})
 			);
 	}
 
 	getRegSg(objrest): Observable<any> {
+		console.log('getRegSg NetsolinApp.objenvrestsolcomobog llama NetsolComobog',NetsolinApp.urlNetsolin, objrest);
 		// console.log('netsolinoapp getregsg llama nets_v_exi_ref');
 		// console.log('NetsolinApp.objenvrestsolcomobog');
 		// console.log(NetsolinApp.objenvrestsolcomobog);

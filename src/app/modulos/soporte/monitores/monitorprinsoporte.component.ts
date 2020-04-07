@@ -28,6 +28,7 @@ import { DomSanitizer, SafeStyle } from '@angular/platform-browser';
 import { EditService } from '../../../services/Editsoporte.service';
 import { Usuarioreg } from '../modeldatousuarioreg';
 // import { Usuarioreg } from './model';
+import { error } from 'util';
 @Component({
   selector: 'app-monitorprinsoporte',
   templateUrl: './monitorprinsoporte.component.html',
@@ -97,8 +98,9 @@ public resultalert;
   llamabusqueda = false;
   pruellegallabusque:string="";
   llaveEmail = '';
-
-
+  listDirec: any[] = [];
+  clienteActual: any;
+  
 
   constructor(
     // @Inject(EditService) editServiceFactory: any,
@@ -276,12 +278,16 @@ return distinct(this.regisusuaractivos, fieldName).map(item => item[fieldName]);
   }
 
   openeditar(ptipo){
+    console.log('openeditar', ptipo);
+    
   }
   public closeeditar(ptipo) {
+    console.log('closeeditar', ptipo);
   }
   
   //maneja el control para llamado adicion de tablas
   openadicion(ptipo) {
+    console.log('openeditar', ptipo);
     if (ptipo == 'cotiza') {
       // this.crearcotiza = true;
     } 
@@ -298,6 +304,7 @@ return distinct(this.regisusuaractivos, fieldName).map(item => item[fieldName]);
   
 
   editClick(event){
+    console.log('editClick', event);
 
   }
   public monitorClick(dataItem): void {
@@ -378,7 +385,8 @@ public colorCode(code: boolean): SafeStyle {
 }
 
 public editHandler({dataItem}) {
-    this.editDataItem = dataItem;
+  console.log('editHandler ', dataItem);
+  this.editDataItem = dataItem;
     this.llaveEmail = dataItem.Email;
     this.isNew = false;
 }
@@ -398,14 +406,54 @@ public saveHandler(usuarioreg: Usuarioreg) {
       this.editDataItem.Version = usuarioreg.Version;  
       this.editDataItem.ver_basicas = usuarioreg.ver_basicas;        
       this.editDataItem.ver_stock = usuarioreg.ver_stock;  
-      this.service.actUsuarioregFb(this.llaveEmail, this.editDataItem);
-      this.service.regLogusuarioregFb(this.editDataItem,'Modificado','Se modifico usuario registrado');
-      console.log('editar ', this.editDataItem);
+      console.log('saveHandler ', this.editDataItem);
+      const copiaeditDataItem = this.editDataItem;
+      this.cargaDireccionesClienteNetsolin(this.editDataItem.id_empresa).then(() => {       
+        console.log('saveHandler 1 ', this.clienteActual, this.editDataItem, copiaeditDataItem);
+        this.editDataItem = copiaeditDataItem;
+        console.log('saveHandler 2 ', this.clienteActual, this.editDataItem, copiaeditDataItem);
+        const DataEmpresa  = {
+          nit: this.editDataItem.id_empresa,
+          nombre: this.clienteActual.cliente,
+          inactivo: this.clienteActual.inactivo,
+          cod_lista: this.clienteActual.cod_lista,
+          lista: this.clienteActual.lista,
+          cod_fpago: this.clienteActual.cod_fpago,
+          for_pago: this.clienteActual.for_pago,
+          direcciones: this.listDirec
+        }
+          console.log('a grabr actEmpresaFb',this.editDataItem.id_empresa, DataEmpresa);
+          this.service.actEmpresaFb(this.editDataItem.id_empresa, DataEmpresa);
+          this.service.actUsuarioregFb(this.llaveEmail, this.editDataItem);
+          this.service.regLogusuarioregFb(this.editDataItem,'Modificado','Se modifico usuario registrado y act datos empresa');
+      })
     // this.service.grabarusuarioregFb(this.editDataItem, this.isNew);
-
     this.editDataItem = undefined;
 }
-
+  cargaDireccionesClienteNetsolin(cod_tercer: string) {
+    return new Promise((resolve, reject) => {
+      this.clienteActual = null;
+      
+      this.service.getDireccionesClienteNetsolin(cod_tercer).subscribe(
+        (data: any) => {
+          console.log(" cargaDireccionesClienteNetsolin 3 data:",data);
+          if (data.error) {
+            console.error('Erro en getDireccionesClienteNetsolin ',data.error);
+            resolve(false);
+          } else {
+            const direccliente = data.direcciones;
+            console.log('direccliente:',direccliente);            
+            direccliente.forEach(itemreg =>{
+                const litem= { direccion: itemreg.direccion, id_direc: itemreg.id_direc };
+                this.listDirec.push(litem);                
+            });
+            console.log('listDirec', this.listDirec);
+            this.clienteActual = data.datos_gen[0];
+            resolve(true);
+          }
+        });
+    });
+  }
 public removeHandler({dataItem}) {
     // this.editService.remove(dataItem);
     if (dataItem.solucionado || dataItem.seasignocons ){

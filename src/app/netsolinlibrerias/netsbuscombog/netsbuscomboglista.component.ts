@@ -191,14 +191,15 @@ export class ListbusquedacomboglComponent implements OnInit {
     this.confirmado = null;
     this.cargando = true;
     this.enlistaerror = false;
+    console.log('ejeBusqueda',this.objeto, this.busqueda, this.filtro);    
     this.service
       .getNetsolinObjbusqueda(this.objeto, this.busqueda, this.filtro)
       .subscribe(
         result => {
           //reiniciarlo a blanco para que no vuelva a refrescar
           this.filtro = "";
-          // console.log("eje busqueda retorna result");
-          // console.log(result);
+          console.log("eje busqueda retorna result");
+          console.log(result);
           var result0 = result[0];
           // console.log(result0);
           if (typeof result.isCallbackError != "undefined") {
@@ -262,8 +263,8 @@ export class ListbusquedacomboglComponent implements OnInit {
     // console.log("this.objeto;"+this.objeto);
     this.service.getNetsolinObjmantbasica(this.objeto).subscribe(
       result => {
-        // console.log("getNetsolinObjmantbasica 1");
-        // console.log(result);
+        console.log("getNetsolinObjmantbasica 1");
+        console.log(result);
         var result0 = result[0];
         // console.log(result0);
         if (typeof result.isCallbackError != "undefined") {
@@ -292,23 +293,24 @@ export class ListbusquedacomboglComponent implements OnInit {
             "Error. Debe definir en el objeto los campos a visualizar.";
           // console.log("getNetsolinObjmantbasica luego de cargar objeto 4 ojo no tiene campos a mostrar");
         }
+        //op abril 6 no tener encuenta seguridad
+        // this.segper_consultar = result.per_consultar;
+        // if (this.filtro.length !== 0) {
+        //   this.searchTbasica(this.filtro);
+        // } else {
+        //   this.enerror = false;
+        //   this.cargando = false;
+        // }
+        // this.cargoConfig = true;
+
         this.service.getNetsolinSegObj(this.objeto).subscribe(
           result => {
             console.log('Seguridad result');
-            // console.log(result);
-            // this.segper_adicionar = result.per_adicionar;
             this.segper_consultar = result.per_consultar;
-            // this.segper_eliminar = result.per_eliminar;
-            // this.segper_modificar = result.per_modificar;
-            // console.log('Seguridad');
-            // console.log('Seguridad 1');
             if (this.filtro.length !== 0) {
-            //   console.log('Seguridad 2 this.filtro:'+this.filtro);
               this.searchTbasica(this.filtro);
-              //   this.ejeBusqueda();
             } else {
               this.enerror = false;
-              // console.log('Seguridad 3 ojo error');
               this.cargando = false;
             }
             this.cargoConfig = true;

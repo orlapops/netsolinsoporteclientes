@@ -40,7 +40,8 @@ export class NetscomboboxService extends BehaviorSubject<any> {
         // console.log(filtro);
         // console.log('getch prueba combog objrest:');
         // console.log(objrest);
-
+            console.log('fetch netscomboboc.service.ts ',NetsolinApp.urlNetsolin, NetsolinApp.objenvrestsolcomobog);
+            
 		return this.http.post(NetsolinApp.urlNetsolin + "NetsolComobog.csvc", NetsolinApp.objenvrestsolcomobog)
 			.pipe(
 			map(resul => {

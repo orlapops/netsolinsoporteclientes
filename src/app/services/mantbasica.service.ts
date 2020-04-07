@@ -2,14 +2,11 @@ import { Injectable } from "@angular/core";
 // import { Headers, Http, Response } from '@angular/http';
 // import 'rxjs/Rx';
 // import { Observable } from 'rxjs';
-import {
-  HttpClient,
-  HttpHeaders,
-  HttpErrorResponse
-} from "@angular/common/http";
+import {HttpClient,HttpHeaders,HttpErrorResponse} from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
 import { catchError, map, tap } from "rxjs/operators";
 import { NetsolinApp } from '../shared/global';
+import { environment } from '../../environments/environment';
 
 import {
   FormControl,
@@ -137,8 +134,8 @@ export class MantbasicaService {
         }
       }
     }
-    // console.log("filtro para buscar");
-    // console.log(NetsolinApp.objenvrestcrud.filtro);
+    console.log("gettablaSearch filtro para buscar");
+    console.log(NetsolinApp.urlNetsolin,NetsolinApp.objenvrestcrud);
     return this.http
       .post(
         NetsolinApp.urlNetsolin + "nets_v_exi_ref.csvc",
@@ -175,7 +172,7 @@ export class MantbasicaService {
     NetsolinApp.objenvrestcrud.campollave = pcampollave;
     NetsolinApp.objenvrestcrud.clase_val = pclase_val;
     NetsolinApp.objenvrestcrud.clase_nbs = pclase_nbs;
-    // console.log('getregTabla pcampollave:'+pcampollave);
+    console.log('getregTabla pcampollave:'+pcampollave);
     if (typeof id == "string") {
       var acllave = pcampollave.split(",");
       var aid = id.split("|");
@@ -204,13 +201,16 @@ export class MantbasicaService {
     NetsolinApp.objenvrestcrud.cursor = "Tcursorx";
     NetsolinApp.objenvrestcrud.filtro = "";
     NetsolinApp.objenvrestcrud.datos = id;
-    return this.http
-      .post(
-        NetsolinApp.urlNetsolin + "nets_v_exi_ref.csvc",
-        NetsolinApp.objenvrestcrud
-      )
-      .pipe(
-        map(resul => {
+    var paramSolicitud: string = "";
+
+    if (environment.production) {
+			paramSolicitud = NetsolinApp.urlNetsolin + "nets_v_exi_ref.csvc";
+		} else {
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "nets_v_exi_ref.csvc";
+		}
+    // return this.http.post(NetsolinApp.urlNetsolin + "nets_v_exi_ref.csvc",NetsolinApp.objenvrestcrud)
+    return this.http.post(paramSolicitud, NetsolinApp.objenvrestcrud)
+      .pipe(map(resul => {
           // console.log('getregtabla resul');
           // console.log(resul);
           var result0 = resul[0];
@@ -361,8 +361,8 @@ export class MantbasicaService {
     NetsolinApp.objenvrestsolcomobog.objeto = objeto;
     NetsolinApp.objenvrestsolcomobog.filtroadi=filtroadi;
     NetsolinApp.objenvrestsolcomobog.cursor = "Tcursorx";
-    // console.log("getListadropdown por netsolin NetsolinApp.objenvrestsolcomobog");
-    // console.log(NetsolinApp.objenvrestsolcomobog);
+    console.log("getListadropdown por netsolin NetsolinApp.objenvrestsolcomobog");
+    console.log(NetsolinApp.objenvrestsolcomobog, NetsolinApp.urlNetsolin);
     return this.http
       .post(
         NetsolinApp.urlNetsolin + "NetsolComobog.csvc",

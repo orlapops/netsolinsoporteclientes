@@ -67,11 +67,22 @@
 
 
             <div class="form-group">
-                <label for="id_empresa" class="control-label">Nit</label>
+                <label *ngIf="!enerror" for="id_empresa" data-toggle="tooltip" title="Seleccione el cliente.">Cliente - {{labelcliente}} </label>
+                <label class="text-danger" *ngIf="enerror" for="id_empresa" data-toggle="tooltip" title="Seleccione el cliente.">Cliente ERROR- {{labelcliente}} </label>
+                <i class="fa fa-check-circle check" *ngIf="!enerror && libmantab.conpropvalCampo('id_empresa','valid',editForm)"></i>
+                <i class="fa fa-exclamation-circle uncheck" *ngIf="enerror"></i>
+                <i class="fa fa-exclamation-circle uncheck" *ngIf="libmantab.conpropvalCampo('id_empresa','invalid',editForm)"></i>
+                <nets-ccombog #id_empresa (recibeDatos)="libmantab.recibeCombobus($event,'id_empresa',editForm)" ltooltip="Seleccione el cliente." ltitbusqueda="Buscar cliente" placeholder="Escriba parte del código del cliente o el nombre para buscar."
+                    valueini="{{libmantab.valoriniCombog('id_empresa',editForm)}}" lobjbusqueda="RESTCONCLIENTEAPP" camporetbusq="cod_tercer"></nets-ccombog>
+
+                <!-- <nets-ccombog #id_empresa (recibeDatos)="verCombocod_refven($event,'cod_refven','cod_refven')" ltooltip="Seleccione el cliente." ltitbusqueda="Buscar cliente" placeholder="Escriba parte del código del cliente o el nombre para buscar."
+                    valueini="{{libmantab.valoriniCombog('id_empresa',editForm)}}" lobjbusqueda="RESTCONCLIENTEAPP" camporetbusq="cod_tercer"></nets-ccombog> -->
+
+                <!-- <label for="id_empresa" class="control-label">Nit</label>
                 <input type="text" class="k-textbox" formControlName="id_empresa" />
                 <div class="k-tooltip k-tooltip-validation" [hidden]="editForm.controls.id_empresa.valid || editForm.controls.id_empresa.pristine">
                     Nit Empresa es requerido
-                </div>
+                </div> -->
             </div>
 
             <!-- <div class="form-group">

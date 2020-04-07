@@ -117,12 +117,13 @@ export class AppheaderComponent implements OnInit {
   }
 
   loadhtmlmenuusuario() {
+    this.cargousuario = false;
     this.service.getNetsolinUsuar()
       .subscribe(result => {
         // console.log(result)
         this.pusuario = result;
         this.cargousuario = true;
-        // console.log('pusuario');
+        console.log('pusuario', this.pusuario);
         // console.log(this.pusuario);
       }, error => {
         this.cargousuario = false;

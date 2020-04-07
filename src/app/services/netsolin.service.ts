@@ -194,6 +194,30 @@ export class NetsolinService {
 				})
 			);
 	}
+
+	getDireccionesClienteNetsolin(cod_tercer: string): Observable<any> {
+		console.log('gerCliente url:',NetsolinApp.urlNetsolin + "netsolin_servirestgo.csvc?VRCod_obj=RESTDIRCLIEAPP");		
+		NetsolinApp.objenvrest.filtro = cod_tercer;
+		let paramgrab = {
+			usuario: NetsolinApp.oapp.cuserid
+		  };
+		NetsolinApp.objenvrest.parametros = paramgrab;
+		console.log('NetsolinApp.objenvrest.parametros:',NetsolinApp.objenvrest.parametros);		 
+		var url: string = "";
+		if (environment.production) {
+			url =NetsolinApp.urlNetsolin + "netsolin_servirestgo.csvc?VRCod_obj=RESTDIRCLIEAPP";
+		} else {
+			url = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "netsolin_servirestgo.csvc?VRCod_obj=RESTDIRCLIEAPP";
+		}
+		console.log('NetsolinApp.objenvrest:',NetsolinApp.objenvrest);			   
+		return this.http.post( url, NetsolinApp.objenvrest)
+			.pipe(
+				map(resul => {
+					console.log('retorna getDireccionesClienteNetsolin resul:',resul);
+					return resul;
+				})
+			);
+	}
 	
 	getNetsolinAlertas(): Observable<any> {
 		var paramSolicitud: string = "";
@@ -351,12 +375,14 @@ export class NetsolinService {
 		var paramSolicitud: string = "";
 
 		if (environment.production) {
-			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTCONSEGOBJ", NetsolinApp.objenvrestddtabla;
+			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTCONSEGOBJ";
 		} else {
-			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTCONSEGOBJ", NetsolinApp.objenvrestddtabla;
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTCONSEGOBJ";
 		}
-
-		return this.http.get(paramSolicitud)
+		console.log('getNetsolinSegObj',paramSolicitud, NetsolinApp.objenvrestddtabla);
+			
+		// return this.http.get(paramSolicitud, NetsolinApp.objenvrestddtabla)
+		return this.http.post(paramSolicitud, NetsolinApp.objenvrestddtabla)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinSegObj');
@@ -370,6 +396,7 @@ export class NetsolinService {
 	//Lee objeto para mant tabla basica
 	getNetsolinObjmantbasica(pobjeto): Observable<any> {
 		NetsolinApp.objenvrestddtabla.usuario = NetsolinApp.oapp.cuserid;
+		// NetsolinApp.objenvrestddtabla.usuario = "NETSOLIN";
 		NetsolinApp.objenvrestddtabla.psw = NetsolinApp.oapp.cuserpsw;
 		NetsolinApp.objenvrestddtabla.prefijobd = NetsolinApp.oapp.prefijo_sqlbd;
 		NetsolinApp.objenvrestddtabla.tabla = "GENERAL";
@@ -378,12 +405,13 @@ export class NetsolinService {
 		var paramSolicitud: string = "";
 
 		if (environment.production) {
-			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA", NetsolinApp.objenvrestddtabla;
+			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA";
 		} else {
-			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA", NetsolinApp.objenvrestddtabla;
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA";
 		}
-
-		return this.http.get(paramSolicitud)
+		console.log('getNetsolinObjmantbasica',environment.production,NetsolinApp.objenvrestddtabla,paramSolicitud);
+		
+		return this.http.post(paramSolicitud, NetsolinApp.objenvrestddtabla)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinObjmantbasica');
@@ -409,12 +437,12 @@ export class NetsolinService {
 		var paramSolicitud: string = "";
 
 		if (environment.production) {
-			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA", NetsolinApp.objenvrestddtabla;
+			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA";
 		} else {
-			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+"Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA", NetsolinApp.objenvrestddtabla;
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+ NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=RESTOBJMANTBASICA";
 		}
 
-		return this.http.get(paramSolicitud)
+		return this.http.post(paramSolicitud, NetsolinApp.objenvrestddtabla)
 			.pipe(
 				map(result => {
 					// console.log('map getNetsolinObjmantbasica');
@@ -512,16 +540,16 @@ export class NetsolinService {
 		var paramSolicitud: string = "";
 
 		if (environment.production) {
-			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=" + pobjeto, NetsolinApp.objenvrestsolcomobog;
+			paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=" + pobjeto;
 		} else {
-			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+"Ejeservi_rest.csvc?VRCod_obj=" + pobjeto, NetsolinApp.objenvrestsolcomobog;
+			paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+ NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=" + pobjeto;
 		}
-
-		return this.http.get(paramSolicitud)
+		console.log('getNetsolinObjbusqueda',paramSolicitud , NetsolinApp.objenvrestsolcomobog);		
+		return this.http.post(paramSolicitud, NetsolinApp.objenvrestsolcomobog)
 			.pipe(
 				map(resul => {
-					// console.log('map getNetsolinObjbusqueda');
-					//  console.log(resul);
+					console.log('map getNetsolinObjbusqueda');
+					 console.log(resul);
 					var result0 = resul[0];
 					//  console.log(result0);
 					//si hay error retorna lista de errores sino el registro solicitado
@@ -550,12 +578,12 @@ export class NetsolinService {
 			var paramSolicitud: string = "";
 
 			if (environment.production) {
-				paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=" + pobjeto, NetsolinApp.objenvrest;
+				paramSolicitud = NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=" + pobjeto;
 			} else {
-				paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+"Ejeservi_rest.csvc?VRCod_obj=" + pobjeto, NetsolinApp.objenvrest;
+				paramSolicitud = 'https://cors-anywhere.herokuapp.com/'+ NetsolinApp.urlNetsolin + "Ejeservi_rest.csvc?VRCod_obj=" + pobjeto;
 			}
 	
-			return this.http.get(paramSolicitud)
+			return this.http.post(paramSolicitud, NetsolinApp.objenvrest)
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinObjconParametros');
@@ -846,6 +874,12 @@ export class NetsolinService {
 		console.log('actUsuarioregFb ', idt, objusuarioreg);
 		this.fbDb.collection(`/usuarios`)
 			.doc(idt).update(objusuarioreg);
+	}
+
+	public actEmpresaFb(idt, objempresareg) {
+		console.log('actEmpresaFb ', idt, objempresareg);
+		this.fbDb.collection(`/empresas`)
+			.doc(idt).set(objempresareg);
 	}
 
 	public deleteUsuarioregFb(idt) {
