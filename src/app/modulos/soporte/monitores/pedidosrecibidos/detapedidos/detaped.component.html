@@ -1,7 +1,8 @@
 <!-- Container-fluid starts-->
 <!-- <div *ngIf="oapp.datosEmpre" class="container-fluid product-wrapper" [class.sidebaron]="sidebaron"> -->
-<div  class="container-fluid product-wrapper" [class.sidebaron]="sidebaron">
-        <div class="product-grid">
+  <!-- <div  class="container-fluid product-wrapper" [class.sidebaron]="sidebaron"> -->
+    <div  class="container-fluid product-wrapper" >
+      <div class="product-grid">
         <div *ngIf="!resultados" class="row">
             <kendo-splitter-pane>
                 <kendo-tabstrip>
@@ -10,17 +11,26 @@
                           <div class="col-12 " *ngIf="cargoclienteNetsolin">
                             <div class="card">
                                 <div class="card-block">
-                                        Cliente: {{clienteActual.cod_tercer +' / '+ clienteActual.cliente}}
-                                        {{'Lista de precios: ' +clienteActual.lista +' Forma de Pago: '+ clienteActual.for_pago}}
-                                        <div class="form-group">
-                                          <div class="col-xs-6 col-sm-3 col-md-3">
+                                        Cliente: <strong class="titped"> {{clienteActual.cod_tercer +' / '+ clienteActual.cliente}}</strong>
+                                        Lista de precios: <strong class="titped"> {{clienteActual.lista }}</strong>
+                                        Forma de Pago: <strong class="titped">{{clienteActual.for_pago}}</strong>
+                                        Dirección despacho: <strong class="titped">{{dirdespa.zona+' | '+dirdespa.ciudad+' | '+dirdespa.direccion}}</strong>
+                                        <div *ngIf="!lineapreciovalida" class="alert alert-danger" role="alert">
+                                           <h2>Ojo no ha definido Línea vendedor para app. Verifique antes. No se puede abrir el pedido por linea.</h2>
+                                        </div>
+
+                                        <div *ngIf="lineapreciovalida">
+                                          <div class="col-8">
                                             <label class="k-form-field">
-                                            <span>Notas</span>
-                                            <input class="k-textbox" placeholder="Notas del pedido"  [(ngModel)]="notasped" required />
-                                        </label>
-                                      </div>
-                                        
-                                          <div class="col-xs-6 col-sm-3 col-md-3">
+                                            <span>Notas: </span>
+                                            <input class="k-textbox notasped" placeholder="Notas del pedido"  [(ngModel)]="notasped" required />
+                                          </label>
+                                          <!-- <p> -->
+                                            <button kendoButton (click)="GrabarPedidos()" primary="true">Generar Pedidos</button>
+                                            <!-- </p> -->
+                                                </div>
+                                      
+                                          <!-- <div class="col-xs-6 col-sm-3 col-md-3">
                                               <label class="k-form-field">
                                                   <span>Dirección despacho</span>
                                                   <kendo-combobox
@@ -31,15 +41,12 @@
                                                   >
                                                   </kendo-combobox>
                                               </label>
-                                          </div>                          
-                                        <p>
-                                          <button kendoButton (click)="GrabarPedidos()" primary="true">Generar Pedidos</button>
-                                      </p>
-                                        </div>
+                                          </div>                           -->
+                                  </div>
                                 </div>
                             </div>
                         </div>                    
-                          <div class="row">
+                          <!-- <div class="row"> -->
                                 <div class="col-md-12">
                                         <!-- TABLE: LATEST ORDERS -->
                                         <div class="box box-red">
@@ -56,7 +63,7 @@
 
                                                   <!-- [groupable]="{ showFooter: true }" -->
 
-                                                  <kendo-grid 
+                                                  <kendo-grid class="netsgrid"
                                                       [group]="state.group"
                                                       (dataStateChange)="dataStateChange($event)"
                                                         [data]="gridData" [height]="700" [pageSize]="state.take" [skip]="state.skip"  
@@ -70,12 +77,12 @@
                                                             pagerPreviousPage="Anterior" pagerPage="Página" pagerOf="de" pagerItems="ítems" pagerItemsPerPage="ítems por página">
                                                         </kendo-grid-messages>
                                                         <div>
-                                                            <kendo-grid-column field="cod_linea" title="Linea" width="100">
+                                                            <kendo-grid-column field="linea" title="Linea" width="100">
                                                                 <!-- <ng-template kendoGridGroupHeaderTemplate let-group let-field="field" let-value="value">
                                                                    <strong>Linea</strong>: {{value}} 
                                                                 </ng-template> -->
                                                                 <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
-                                                                  <span class="danger" title="Totales Pedidos pares">
+                                                                  <span class="titped" title="Totales Pedidos pares">
                                                                     Totales Pedido 
                                                                   </span>
                                                                 </ng-template>
@@ -138,7 +145,7 @@
                                                               </kendo-grid-column>
                                                               <kendo-grid-column field="tpares"  width="80" title="Pares" >
                                                                 <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
-                                                                  <span class="danger" title="Totales Pedidos pares">
+                                                                  <span class="titped" title="Totales Pedidos pares">
                                                                     Pares: {{ totalpares }}
                                                                   </span>
                                                                 </ng-template>
@@ -159,7 +166,7 @@
                                                               </ng-template>
                                                               <ng-template kendoGridFooterTemplate let-column let-columnIndex="columnIndex">
                                                                 <!-- {{column.field}}({{columnIndex}}) -->
-                                                                <span class="danger" title="Totales Pedidos Total">
+                                                                <span class="titped" title="Totales Pedidos Total">
                                                                   Total: {{ totalpedido | currency:'CAD':'symbol-narrow':'4.2-2'}}
                                                                 </span>
                                                               </ng-template>
@@ -207,7 +214,7 @@
                                             </div>
                                         </div>
                                 </div>
-                            </div>
+                            <!-- </div> -->
                         </ng-template>
                     </kendo-tabstrip-tab>       
                     <kendo-tabstrip-tab [title]="'Log'">

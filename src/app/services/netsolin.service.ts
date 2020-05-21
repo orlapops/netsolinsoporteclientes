@@ -169,11 +169,12 @@ export class NetsolinService {
 	}
 
 	//Traer un cliente de Netsolin con datos basicos y direcciones
-	getClienteNetsolin(cod_tercer: string, datosped: any): Observable<any> {
+	getClienteNetsolin(cod_tercer: string, datosdirec: any, datosped: any): Observable<any> {
 		console.log('gerCliente url:',NetsolinApp.urlNetsolin + "netsolin_servirestgo.csvc?VRCod_obj=RESTDATCLIEAPP");		
 		NetsolinApp.objenvrest.filtro = cod_tercer;
 		let paramgrab = {
 			items_pedido: datosped,
+			direccion: datosdirec,
 			usuario: NetsolinApp.oapp.cuserid
 		  };
 		NetsolinApp.objenvrest.parametros = paramgrab;
@@ -250,7 +251,7 @@ export class NetsolinService {
 			.pipe(
 				map(resul => {
 					// console.log('map getNetsolinAlertas');
-					//  console.log(resul);
+					 console.log(resul);
 					return resul;
 				})
 			);
@@ -962,11 +963,41 @@ export class NetsolinService {
 				)
 			);
 	}
+	//trae pedido guardado en la app sin haber sido agrupado
 	public getPedidoFB(idped) {
 		return this.fbDb
 			.collection(`/pedidos`).doc(idped)
 			.valueChanges();			
 	}
+	//Si ya se ha enviado a grabar traer pedido grabado o en  proceso 
+	public getPedidoFBAgrupado(idped,id_empresa) {
+		return this.fbDb
+			.collection(`/empresas/${id_empresa}/pedidos/`).doc(idped)
+			.valueChanges();			
+	}
+	//retorna si ha sido pregrabado un pedido por agrupamiento este 
+	public getPedidoidrestFB(idped,id_empresa,cod_linea) {
+		console.log('getPedidoidrestFB',idped,id_empresa,cod_linea,`/empresas/${id_empresa}/pedidos/${idped}/pedido/`);
+		
+		return this.fbDb
+			.collection(`/empresas/${id_empresa}/pedidos/${idped}/pedido/`,cod => 
+				cod.where('cod_linea','==',cod_linea))
+			.valueChanges();			
+	}
+	
+	//graba registro general del pedido
+	public grabarPedidoAgrupadofb(idped, id_empresa,datpedido){
+		console.log('grabarPedidoAgrupadofb ',idped, id_empresa,datpedido);		
+		return this.fbDb.collection(`/empresas/${id_empresa}/pedidos/`)
+		.doc(idped).set(datpedido);
+	}
+	//graba un pedido del registro general pedido
+	public grabarUnPedidoAgrupadofb(idped, idpedido,id_empresa,datpedido){
+		console.log('grabarPedidoAgrupadofb ',idped, id_empresa,datpedido);		
+		return this.fbDb.collection(`/empresas/${id_empresa}/pedidos/${idped}/pedido/`)
+		.doc(idpedido).set(datpedido);
+	}
+
 	public getClienteFB(id) {
 		return this.fbDb
 			.collection(`/empresas`).doc(id)
